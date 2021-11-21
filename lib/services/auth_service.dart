@@ -1,4 +1,5 @@
 import 'package:doodle_app/models/user_mod.dart';
+import 'package:doodle_app/services/data_base.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -19,6 +20,7 @@ class AuthService {
     try{
       UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       User? user = result.user;
+      await DataBaseService(uid: user!.uid).updateUserData(email, email);
       return _userFromFirebaseUser(user);
     } catch(e){
       print(e.toString());

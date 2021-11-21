@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 
-Color primaryGreen = Colors.indigoAccent;
+Color primaryGreen = Colors.white70;
 List<BoxShadow> shadowList = [
   BoxShadow(color: Colors.grey.shade300, blurRadius: 30, offset: Offset(0, 10))
 ];

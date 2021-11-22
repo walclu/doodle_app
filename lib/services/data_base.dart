@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:doodle_app/models/project.dart';
 
 class DataBaseService {
 
@@ -25,22 +26,21 @@ class DataBaseService {
       'done': done,
     });
   }
-/*
-  Stream<List<Brew>> get brews {
-    return brewCollection.snapshots().map(_brewListFromSnapshot);
+
+  Stream<List<Project>?> get projectListStream {
+    return projectsCollection.snapshots().map(_projectListFromSnapshot);
   }
 
-  List<Brew> _brewListFromSnapshot(QuerySnapshot snapshot){
+  List<Project> _projectListFromSnapshot(QuerySnapshot snapshot){
     return snapshot.docs.map((doc){
-      return Brew(
+      return Project(
         name: doc['name'] ?? '',
-        strength: doc['strength'] ?? 0,
-        sugars: doc['sugars'] ?? '',
+        done: doc['done'] ?? false,
       );
     }).toList();
   }
   //get user doc stream
-
+/*
 
   UserData _userDataFromSnapshot(DocumentSnapshot snapshot)
   {

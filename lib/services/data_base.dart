@@ -20,10 +20,11 @@ class DataBaseService {
     });
   }
 
-  Future updateProjects(String name, bool done) async {
+  Future updateProjects(String name, bool done, List<int> data) async {
     return await projectsCollection.doc(name).set({
       'name': name,
       'done': done,
+      'data': data, 
     });
   }
 
@@ -36,6 +37,7 @@ class DataBaseService {
       return Project(
         name: doc['name'] ?? '',
         done: doc['done'] ?? false,
+        data: doc['data'].cast<int>()
       );
     }).toList();
   }

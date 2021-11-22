@@ -28,25 +28,25 @@ class _HomeScreenState extends State<HomeScreen> {
     return StreamProvider<List<Project>?>.value(
       value: DataBaseService(uid: user!.uid).projectListStream,
       initialData: [],
-      child: AnimatedContainer(
-        decoration: isDrawerOpen
-            ? BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(30),
-              )
-            : BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(1),
-              ),
-        transform: Matrix4.translationValues(xOffset, yOffset, 0)
-          ..scale(scaleFactor)
-          ..rotateY(isDrawerOpen ? -0.5 : 0),
-        duration: Duration(milliseconds: 200),
-        child: Material(
-          child: Scaffold(
-            body:
-                SingleChildScrollView(
-                  child: Column(
+      child: MaterialApp(
+        home: AnimatedContainer(
+          decoration: isDrawerOpen
+              ? BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(30),
+                )
+              : BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(1),
+                ),
+          transform: Matrix4.translationValues(xOffset, yOffset, 0)
+            ..scale(scaleFactor)
+            ..rotateY(isDrawerOpen ? -0.5 : 0),
+          duration: Duration(milliseconds: 200),
+          child: Material(
+            child: Scaffold(
+              body:
+                  Column(
                       children: [
                         SizedBox(height:50),
                         Row(
@@ -80,16 +80,16 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ],
                         ),
-
+      
                         //SizedBox(height:20),
                         ProjectList(),
                       ]),
-                ),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                _addProject(context, user.uid);
-              },
-              child: Icon(Icons.add),
+              floatingActionButton: FloatingActionButton(
+                onPressed: () {
+                  _addProject(context, user.uid);
+                },
+                child: Icon(Icons.add),
+              ),
             ),
           ),
         ),
@@ -122,7 +122,7 @@ Future<void> _addProject(context, uid) async {
             child: const Text('Create'),
             onPressed: () async {
               await DataBaseService(uid: uid)
-                  .updateProjects(projectName, false);
+                  .updateProjects(projectName, false, [1,2,3]);
               Navigator.of(context).pop();
             },
           ),

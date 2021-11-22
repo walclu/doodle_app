@@ -15,12 +15,23 @@ class _ProjectListState extends State<ProjectList> {
   Widget build(BuildContext context) {
 
     final projects = Provider.of<List<Project>?>(context) ?? [];
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: projects.length,
-      itemBuilder: (BuildContext context, int index) {
-        return ProjectTile(project: projects[index]);
-    });
+    // return ListView.builder(
+    //   shrinkWrap: true,
+    //   itemCount: projects.length,
+    //   itemBuilder: (BuildContext context, int index) {
+    //     return ProjectTile(project: projects[index]);
+    // }
+    // );
+    return Expanded(
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            for(int i = 0; i<projects.length; i++)
+              ProjectTile(project: projects[i], index: i)
+          ],
+        ),
+      ),
+    ); 
   }
 }
 

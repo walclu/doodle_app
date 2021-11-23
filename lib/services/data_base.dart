@@ -1,9 +1,12 @@
+import 'dart:html';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doodle_app/models/project.dart';
 
 class DataBaseService {
 
   final String uid;
+  DataBaseService({required this.uid});
 
   final CollectionReference userDataCollection =
   FirebaseFirestore.instance.collection('userData');
@@ -11,7 +14,9 @@ class DataBaseService {
   final CollectionReference projectsCollection =
   FirebaseFirestore.instance.collection('projects');
 
-  DataBaseService({required this.uid});
+  // final CollectionReference subcollectionReference = FirebaseFirestore.instance.collection('userData').doc(uid).collection('notes');  
+  
+  
 
   Future updateUserData(String name, String email) async {
     return await userDataCollection.doc(uid).set({
@@ -21,7 +26,7 @@ class DataBaseService {
   }
 
   Future updateProjects(String name, bool done, List<int> data) async {
-    return await projectsCollection.doc(name).set({
+    return await userDataCollection.doc(uid).collection('notes').doc(name).set({
       'name': name,
       'done': done,
       'data': data, 
@@ -29,7 +34,7 @@ class DataBaseService {
   }
 
   Stream<List<Project>?> get projectListStream {
-    return projectsCollection.snapshots().map(_projectListFromSnapshot);
+    return userDataCollection.snapshots().map(_projectListFromSnapshot);
   }
 
   List<Project> _projectListFromSnapshot(QuerySnapshot snapshot){

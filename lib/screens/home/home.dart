@@ -21,6 +21,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   bool isDrawerOpen = false;
 
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserMod?>(context);
@@ -45,45 +47,44 @@ class _HomeScreenState extends State<HomeScreen> {
           duration: Duration(milliseconds: 200),
           child: Material(
             child: Scaffold(
-              body:
-                  Column(
-                      children: [
-                        SizedBox(height:50),
-                        Row(
-                          children: [
-                            isDrawerOpen ? IconButton(
-                              icon: Icon(Icons.arrow_back_ios),
-                              onPressed: () {
-                                setState(() {
-                                  xOffset = 0;
-                                  yOffset = 0;
-                                  scaleFactor = 1;
-                                  isDrawerOpen = false;
-                                });
-                              },
-                            ) :
-                            IconButton(
-                                icon: Icon(Icons.menu),
-                                onPressed: () {
-                                  setState(() {
-                                    xOffset = 230;
-                                    yOffset = 150;
-                                    scaleFactor = .6;
-                                    isDrawerOpen = true;
-                                  });
-                                }),
-                            const Text(
-                              'ToDoodle',
-                              style: TextStyle(
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-      
-                        //SizedBox(height:20),
-                        ProjectList(),
-                      ]),
+              body: Column(children: [
+                SizedBox(height: 50),
+                Row(
+                  children: [
+                    isDrawerOpen
+                        ? IconButton(
+                            icon: Icon(Icons.arrow_back_ios),
+                            onPressed: () {
+                              setState(() {
+                                xOffset = 0;
+                                yOffset = 0;
+                                scaleFactor = 1;
+                                isDrawerOpen = false;
+                              });
+                            },
+                          )
+                        : IconButton(
+                            icon: Icon(Icons.menu),
+                            onPressed: () {
+                              setState(() {
+                                xOffset = 230;
+                                yOffset = 150;
+                                scaleFactor = .6;
+                                isDrawerOpen = true;
+                              });
+                            }),
+                    const Text(
+                      'ToDoodle',
+                      style: TextStyle(
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
+
+                //SizedBox(height:20),
+                ProjectList(),
+              ]),
               floatingActionButton: FloatingActionButton(
                 onPressed: () {
                   _addProject(context, user.uid);
@@ -96,38 +97,45 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-}
 
-Future<void> _addProject(context, uid) async {
-  String projectName = '';
-  return showDialog<void>(
-    context: context,
-    barrierDismissible: false, // user must tap button!
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: const Text('Add a new project'),
-        content: SingleChildScrollView(
-          child: ListBody(
-            children: <Widget>[
-              TextFormField(
-                onChanged: (val) {
-                  projectName = val;
-                },
-              ),
-            ],
+  Future<void> _addProject(context, uid) async {
+    String projectName = '';
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Add a new project'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Form(
+                  key: _formKey,
+                  child: TextFormField(
+                    validator: (val) =>
+                        val!.isEmpty ? "Enter valid name" : null,
+                    onChanged: (val) {
+                      projectName = val;
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-        actions: <Widget>[
-          TextButton(
-            child: const Text('Create'),
-            onPressed: () async {
-              await DataBaseService(uid: uid)
-                  .updateProjects(projectName, false, [1,2,3]);
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      );
-    },
-  );
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Create'),
+              onPressed: () async {
+                if (_formKey.currentState!.validate()) {
+                  await DataBaseService(uid: uid)
+                      .updateProjects(projectName, false, []);
+                  Navigator.of(context).pop();
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 }

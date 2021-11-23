@@ -18,43 +18,59 @@ class ProjectPage extends StatefulWidget {
 class _ProjectPageState extends State<ProjectPage> {
 
   final _formKey = GlobalKey<FormState>();
-
+  String search = '';
   @override
   Widget build(BuildContext context) {
 
     final user = Provider.of<UserMod?>(context);
     final projects = Provider.of<List<Project>?>(context) ?? [] ;
     DataBaseService service = DataBaseService(uid: user!.uid);
-    String search;
     return Material(
       child: Scaffold(
         body: Column(
           children: [
-            SizedBox(height: 60,),
             // Freund einladen
+            SizedBox(height: 60),
             Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    TextFormField(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Form(
+                      key: _formKey,
+                      child: TextFormField(
                       decoration: textInputDecoration.copyWith(hintText: "Search for users"),
-                      validator: (val) => val!.isEmpty ? 'Enter an email of your friend' : null,
-                      onChanged: (val){
-                        setState(() {
-                          search = val;
-                        });
-                      },
+                        validator: (val) => val!.isEmpty ? 'Enter an email of your friend' : null,
+                        onChanged: (val){
+                          setState(() {
+                            search = val;
+                          });
+                        },
+                      ),
                     ),
-                  ],
-                ),
+                  ),
+                  IconButton(
+                      onPressed: () async {
+                        if(_formKey.currentState!.validate()){
+                          dynamic result = await service.uidCollection.doc(search).get();
+                          try {
+                            print(result['uid']);
+                          } catch(e){
+                            print('Search failed');
+                          }
+                        }
+                      },
+                      icon: Icon(Icons.search),
+                  ),
+
+                ],
               ),
             ),
             //
             Container(
               child: Column(
                 children: [
+
                   for(int i=0; i<projects[widget.index].data.length; i++)
                     Card(
                       child: Center(
@@ -71,7 +87,7 @@ class _ProjectPageState extends State<ProjectPage> {
         onPressed: (){
           List<int> currentData = projects[widget.index].data; 
           currentData.add(1); 
-          service.updateProjects(projects[widget.index].name, true, currentData); 
+          service.updateProjects(projects[widget.index].name, true, currentData, projects[widget.index].userPermissions);
         },
       ),
       ),

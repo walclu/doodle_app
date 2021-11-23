@@ -25,11 +25,12 @@ class DataBaseService {
     });
   }
 
-  Future updateProjects(String name, bool done, List<int> data) async {
+  Future updateProjects(String name, bool done, List<int> data, List<String> userPermissions) async {
     return await userDataCollection.doc(uid).collection('notes').doc(name).set({
       'name': name,
       'done': done,
-      'data': data, 
+      'data': data,
+      'permissions' : userPermissions,
     });
   }
 
@@ -42,7 +43,8 @@ class DataBaseService {
       return Project(
         name: doc['name'] ?? '',
         done: doc['done'] ?? false,
-        data: doc['data'].cast<int>()
+        data: doc['data'].cast<int>(),
+        userPermissions: doc['permissions'].cast<String>(),
       );
     }).toList();
   }

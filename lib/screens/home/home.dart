@@ -1,4 +1,5 @@
 import 'package:doodle_app/models/inv_project.dart';
+import 'package:doodle_app/models/permission.dart';
 import 'package:doodle_app/models/project.dart';
 import 'package:doodle_app/models/user_mod.dart';
 import 'package:doodle_app/screens/home/project_list.dart';
@@ -40,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
           initialData: [],
           // catchError: (_, err) => null,
         ),
-        StreamProvider<List<InvProject>?>.value(
+        StreamProvider<List<Permission>?>.value(
           value: DataBaseService(uid: user.uid).inv_projectListStream,
           initialData: [],
           // catchError: (_, err) => null,

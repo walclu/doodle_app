@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doodle_app/models/inv_project.dart';
+import 'package:doodle_app/models/permission.dart';
 import 'package:doodle_app/models/project.dart';
 
 class DataBaseService {
@@ -68,30 +69,17 @@ class DataBaseService {
     }).toList();
   }
 
-  Stream<List<InvProject>?> get inv_projectListStream {
+  Stream<List<Permission>?> get inv_projectListStream {
     return userDataCollection
         .doc(uid)
-        .collection('permissions')
+        .collection('permissons')
         .snapshots()
         .map(_inv_projectListFromSnapshot);
   }
 
-  List<InvProject> _inv_projectListFromSnapshot(QuerySnapshot snapshot) {
+  List<Permission> _inv_projectListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
-      print("#######################################################################"); 
-      print(doc['invUid']); 
-      dynamic doc_ = userDataCollection.doc(doc['invUid']).collection('notes').doc(doc['invProject']).get();
-      // print(doc_["name"]);  
-      return InvProject(
-        // name: doc_['name'] ?? '',
-        // done: doc_['done'] ?? false,
-        // data: doc_['data'].cast<int>(),
-        // userPermissions: doc_['permissions'].cast<String>(),
-        name: "", 
-        done: true, 
-        data: [], 
-        userPermissions: []
-      );
+      return Permission(uid: doc["invUid"], name: doc["invProject"]);
     }).toList();
   }
   //get user doc stream

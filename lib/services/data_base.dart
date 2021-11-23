@@ -54,16 +54,11 @@ class DataBaseService {
         .map(_projectListFromSnapshot);
   }
 
-  Stream<List<InvProject>?> get inv_projectListStream {
-    return userDataCollection
-        .doc(uid)
-        .collection('permissions')
-        .snapshots()
-        .map(_inv_projectListFromSnapshot);
-  }
 
   List<Project> _projectListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
+           print("++++++++++++++++++++++++++++++++++++++++++++++++++++"); 
+      print(doc); 
       return Project(
         name: doc['name'] ?? '',
         done: doc['done'] ?? false,
@@ -73,14 +68,29 @@ class DataBaseService {
     }).toList();
   }
 
+  Stream<List<InvProject>?> get inv_projectListStream {
+    return userDataCollection
+        .doc(uid)
+        .collection('permissions')
+        .snapshots()
+        .map(_inv_projectListFromSnapshot);
+  }
+
   List<InvProject> _inv_projectListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
-      dynamic doc_ = userDataCollection.doc(doc['invUid']).collection('notes').doc(doc['invProject']);
+      print("#######################################################################"); 
+      print(doc['invUid']); 
+      dynamic doc_ = userDataCollection.doc(doc['invUid']).collection('notes').doc(doc['invProject']).get();
+      // print(doc_["name"]);  
       return InvProject(
-        name: doc_['name'] ?? '',
-        done: doc_['done'] ?? false,
-        data: doc_['data'].cast<int>(),
-        userPermissions: doc_['permissions'].cast<String>(),
+        // name: doc_['name'] ?? '',
+        // done: doc_['done'] ?? false,
+        // data: doc_['data'].cast<int>(),
+        // userPermissions: doc_['permissions'].cast<String>(),
+        name: "", 
+        done: true, 
+        data: [], 
+        userPermissions: []
       );
     }).toList();
   }

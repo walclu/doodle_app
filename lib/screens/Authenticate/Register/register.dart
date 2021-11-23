@@ -1,4 +1,5 @@
 import 'package:doodle_app/services/auth_service.dart';
+import 'package:doodle_app/services/data_base.dart';
 import 'package:doodle_app/shared/constants.dart';
 import 'package:doodle_app/shared/loading.dart';
 import 'package:flutter/material.dart';
@@ -28,13 +29,13 @@ class _RegisterState extends State<Register> {
       appBar: AppBar(
         backgroundColor: primaryGreen,
         elevation: 0.0,
-        title: Text('Register to Toodoodle'),
+        title: Text('Register to Todoodle', style: TextStyle(color: Colors.black)),
         actions: [
           FlatButton.icon(
             onPressed: (){
               widget.toggleView();
             },
-            label: Text("Sign in"), 
+            label: Text("Sign in", style: TextStyle(color: Colors.black)),
             icon: Icon(Icons.person),)
         ],
       ),
@@ -67,7 +68,7 @@ class _RegisterState extends State<Register> {
               ), 
               SizedBox(height: 20,), 
               RaisedButton(
-                color: Colors.pink[400],
+                color: Colors.blue[400],
                 child: Text(
                   'Register',
                   style: TextStyle(color: Colors.white),
@@ -83,7 +84,9 @@ class _RegisterState extends State<Register> {
                         loading = false;
                         error = 'please supply a valid email';
                       });
-                    } 
+                    } else {
+                      await DataBaseService(uid: result.uid).updateUids(email, result.uid);
+                    }
                   }
                 }
                 ), 

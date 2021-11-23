@@ -1,7 +1,9 @@
 import 'package:doodle_app/models/project.dart';
 import 'package:doodle_app/models/user_mod.dart';
 import 'package:doodle_app/screens/home/project_list.dart';
+import 'package:doodle_app/services/auth_service.dart';
 import 'package:doodle_app/services/data_base.dart';
+import 'package:doodle_app/shared/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:doodle_app/shared/constants.dart';
 import 'package:doodle_app/screens/drawerScreen/drawerScreen.dart';
@@ -21,16 +23,19 @@ class _HomeScreenState extends State<HomeScreen> {
 
   bool isDrawerOpen = false;
 
+  bool loggedIn = true;
+
   final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+    final AuthService _auth = AuthService();
     final user = Provider.of<UserMod?>(context);
 
     return StreamProvider<List<Project>?>.value(
       value: DataBaseService(uid: user!.uid).projectListStream,
       initialData: [],
-      child: MaterialApp(
+      child: loggedIn ? MaterialApp(
         home: AnimatedContainer(
           decoration: isDrawerOpen
               ? BoxDecoration(
@@ -50,6 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
               body: Column(children: [
                 SizedBox(height: 50),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     isDrawerOpen
                         ? IconButton(
@@ -79,6 +85,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: Colors.black,
                       ),
                     ),
+                    IconButton(
+                        icon: Icon(Icons.logout),
+                        onPressed: () async {
+                          setState(() {
+                            loggedIn = false;
+                          });
+                          dynamic result = await _auth.signOut();
+                        }),
                   ],
                 ),
 
@@ -94,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ),
-      ),
+      ) : Loading(),
     );
   }
 

@@ -1,12 +1,13 @@
 import 'package:doodle_app/models/project.dart';
 import 'package:doodle_app/models/user_mod.dart';
 import 'package:doodle_app/services/data_base.dart';
+import 'package:doodle_app/shared/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ProjectPage extends StatefulWidget {
   
-  int index; 
+  int index;
 
   ProjectPage({required this.index}); 
 
@@ -15,19 +16,41 @@ class ProjectPage extends StatefulWidget {
 }
 
 class _ProjectPageState extends State<ProjectPage> {
+
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
 
     final user = Provider.of<UserMod?>(context);
     final projects = Provider.of<List<Project>?>(context) ?? [] ;
-    DataBaseService service = DataBaseService(uid: user!.uid); 
+    DataBaseService service = DataBaseService(uid: user!.uid);
+    String search;
     return Material(
       child: Scaffold(
         body: Column(
           children: [
             SizedBox(height: 60,),
             // Freund einladen
-
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      decoration: textInputDecoration.copyWith(hintText: "Search for users"),
+                      validator: (val) => val!.isEmpty ? 'Enter an email of your friend' : null,
+                      onChanged: (val){
+                        setState(() {
+                          search = val;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
             //
             Container(
               child: Column(

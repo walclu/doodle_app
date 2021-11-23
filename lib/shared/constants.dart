@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 
-Color primaryGreen = Colors.white70;
+Color primaryGreen = Colors.lightBlueAccent;
 List<BoxShadow> shadowList = [
-  BoxShadow(color: Colors.grey.shade300, blurRadius: 30, offset: Offset(0, 10))
+  BoxShadow(color: Colors.blueAccent, blurRadius: 30, offset: Offset(0, 10))
 ];
 
 InputDecoration getInputDecoration(String emailOrPassword){
@@ -28,7 +28,7 @@ const textInputDecoration = InputDecoration(
   borderSide: BorderSide(color:Colors.white, width: 2.0)
   ),
   focusedBorder: OutlineInputBorder(
-  borderSide: BorderSide(color:Colors.pinkAccent, width: 2.0)
+  borderSide: BorderSide(color:Colors.blueAccent, width: 2.0)
 ),
 );
 

@@ -1,7 +1,10 @@
+import 'package:doodle_app/models/inv_project.dart';
 import 'package:doodle_app/models/project.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:doodle_app/screens/home/project_tile.dart';
+
+import 'inv_project_tile .dart';
 
 class ProjectList extends StatefulWidget {
   const ProjectList({Key? key}) : super(key: key);
@@ -15,6 +18,7 @@ class _ProjectListState extends State<ProjectList> {
   Widget build(BuildContext context) {
 
     final projects = Provider.of<List<Project>?>(context) ?? [];
+    final invProjects = Provider.of<List<InvProject>?>(context) ?? [];
     // return ListView.builder(
     //   shrinkWrap: true,
     //   itemCount: projects.length,
@@ -27,7 +31,9 @@ class _ProjectListState extends State<ProjectList> {
         child: Column(
           children: [
             for(int i = 0; i<projects.length; i++)
-              ProjectTile(project: projects[i], index: i)
+              ProjectTile(project: projects[i], index: i),
+            for(int i = 0; i<invProjects.length; i++)
+              InvProjectTile(project: invProjects[i], index: i)
           ],
         ),
       ),

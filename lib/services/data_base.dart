@@ -77,19 +77,18 @@ class DataBaseService {
   }
 
   List<InvProject> _inv_projectListFromSnapshot(QuerySnapshot snapshot) {
-    return snapshot.docs.map((doc) {
-      print("#######################################################################"); 
-      print(doc['invUid']); 
-      dynamic doc_ = userDataCollection.doc(doc['invUid']).collection('notes').doc(doc['invProject']).get();
-      // print(doc_["name"]);  
+    return snapshot.docs.map((document) {
+      dynamic doc_ = userDataCollection.doc(document['invUid']).collection('notes').doc(document['invProject']).snapshots().listen((doc_) {
+        print(doc_['done']);
+      });
       return InvProject(
         // name: doc_['name'] ?? '',
         // done: doc_['done'] ?? false,
         // data: doc_['data'].cast<int>(),
         // userPermissions: doc_['permissions'].cast<String>(),
-        name: "", 
-        done: true, 
-        data: [], 
+        name: "",
+        done: true,
+        data: [],
         userPermissions: []
       );
     }).toList();

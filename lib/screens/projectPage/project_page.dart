@@ -55,6 +55,7 @@ class _ProjectPageState extends State<ProjectPage> {
                           dynamic result = await service.uidCollection.doc(search).get();
                           try {
                             print(result['uid']);
+                            await service.addUserToProject(result['uid'], projects[widget.index].name); 
                           } catch(e){
                             print('Search failed');
                           }

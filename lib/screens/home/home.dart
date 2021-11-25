@@ -41,11 +41,6 @@ class _HomeScreenState extends State<HomeScreen> {
           initialData: [],
           // catchError: (_, err) => null,
         ),
-        StreamProvider<List<Permission>?>.value(
-          value: DataBaseService(uid: user.uid).inv_projectListStream,
-          initialData: [],
-          // catchError: (_, err) => null,
-        )
       ],
       child: loggedIn
           ? MaterialApp(
@@ -156,7 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
                   await DataBaseService(uid: uid)
-                      .updateProjects(projectName, false, [], []);
+                      .createProject(projectName, false, [], [uid]);
                   Navigator.of(context).pop();
                 }
               },

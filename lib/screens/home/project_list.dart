@@ -22,8 +22,6 @@ class _ProjectListState extends State<ProjectList> {
   Widget build(BuildContext context) {
     final user = Provider.of<UserMod>(context); 
     final projects = Provider.of<List<Project>?>(context) ?? [];
-    final invProjects = Provider.of<List<Permission>?>(context) ?? [];
-    DataBaseService service = DataBaseService(uid: user.uid); 
     // return ListView.builder(
     //   shrinkWrap: true,
     //   itemCount: projects.length,
@@ -31,17 +29,13 @@ class _ProjectListState extends State<ProjectList> {
     //     return ProjectTile(project: projects[index]);
     // }
     // );
-    return StreamProvider.value(
-      value: service.inv_projectListStream,
-       initialData: null,
-      child: Expanded(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              for(int i = 0; i<projects.length; i++)
-                ProjectTile(project: projects[i], index: i),
-            ],
-          ),
+    return Expanded(
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            for(int i = 0; i<projects.length; i++)
+              ProjectTile(project: projects[i], index: i),
+          ],
         ),
       ),
     ); 

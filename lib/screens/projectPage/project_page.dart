@@ -24,6 +24,7 @@ class _ProjectPageState extends State<ProjectPage> {
 
     final user = Provider.of<UserMod?>(context);
     final projects = Provider.of<List<Project>?>(context) ?? [] ;
+    print(projects); 
     DataBaseService service = DataBaseService(uid: user!.uid);
     return Material(
       child: Scaffold(
@@ -54,8 +55,7 @@ class _ProjectPageState extends State<ProjectPage> {
                         if(_formKey.currentState!.validate()){
                           dynamic result = await service.uidCollection.doc(search).get();
                           try {
-                            print(result['uid']);
-                            await service.addUserToProject(result['uid'], projects[widget.index].name); 
+                            await service.addUserToProject(result['uid'], projects[widget.index]); 
                           } catch(e){
                             print('Search failed');
                           }
@@ -88,7 +88,7 @@ class _ProjectPageState extends State<ProjectPage> {
         onPressed: (){
           List<int> currentData = projects[widget.index].data; 
           currentData.add(1); 
-          service.updateProjects(projects[widget.index].name, true, currentData, projects[widget.index].userPermissions);
+          service.updateProject(projects[widget.index].name, true, currentData, projects[widget.index].userPermissions);
         },
       ),
       ),

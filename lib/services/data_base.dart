@@ -7,18 +7,16 @@ class DataBaseService {
   final String uid;
   DataBaseService({required this.uid});
 
-  final CollectionReference userDataCollection =
-      FirebaseFirestore.instance.collection('userData');
+  final CollectionReference projectCollection =
+      FirebaseFirestore.instance.collection('projects');
 
-  List<Permission> permissions = []; 
-  // late final CollectionReference permissionCollection = 
-  //     FirebaseFirestore.instance.collection('userData').doc(uid).
-
+  late final Query unapproved = projectCollection.where("permissions", arrayContains: uid); 
+  
   final CollectionReference uidCollection =
       FirebaseFirestore.instance.collection('uids');
 
   Future updateUserData(String name, String email) async {
-    return await userDataCollection.doc(uid).set({
+    return await projectCollection.doc(uid).set({
       'name': name,
       'email': email,
     });
@@ -30,9 +28,9 @@ class DataBaseService {
     });
   }
 
-  Future updateProjects(String name, bool done, List<int> data,
+  Future updateProject(String name, bool done, List<int> data,
       List<String> userPermissions) async {
-    return await userDataCollection.doc(uid).collection('notes').doc(name).set({
+    return await projectCollection.doc(name).set({
       'name': name,
       'done': done,
       'data': data,
@@ -40,31 +38,36 @@ class DataBaseService {
     });
   }
 
-  Future addUserToProject(String newUserUid, String projectName) async {
-    userDataCollection
-        .doc(newUserUid)
-        .collection('permissions')
-        .doc(projectName)
-        .set({
-      'invUid': uid,
-      'invProject': projectName,
+  Future createProject(String name, bool done, List<int> data,
+      List<String> userPermissions) async {
+    String safeProjectName = name + "_" + uid;
+    return await projectCollection.doc(safeProjectName).set({
+      'name': safeProjectName,
+      'done': done,
+      'data': data,
+      'permissions': userPermissions,
+    });
+  }
+
+
+  Future addUserToProject(String newUserUid, Project project) async {
+    project.userPermissions.add(newUserUid); 
+    projectCollection.doc(project.name).set({
+      'name': project.name,
+      'done': project.done,
+      'data': project.data,
+      'permissions': project.userPermissions,
     });
   }
 
   Stream<List<Project>?> get projectListStream {
-    print("Stream<List<Project>?> get projectListStream"); 
-    return userDataCollection
-        .doc(uid)
-        .collection('notes')
+    return unapproved
         .snapshots()
         .map(_projectListFromSnapshot);
   }
 
-
   List<Project> _projectListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
-      //      print("++++++++++++++++++++++++++++++++++++++++++++++++++++"); 
-      // print(doc); 
       return Project(
         name: doc['name'] ?? '',
         done: doc['done'] ?? false,
@@ -73,5 +76,4 @@ class DataBaseService {
       );
     }).toList();
   }
-
 }

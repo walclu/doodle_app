@@ -10,6 +10,10 @@ class DataBaseService {
   final CollectionReference userDataCollection =
       FirebaseFirestore.instance.collection('userData');
 
+  List<Permission> permissions = []; 
+  // late final CollectionReference permissionCollection = 
+  //     FirebaseFirestore.instance.collection('userData').doc(uid).
+
   final CollectionReference uidCollection =
       FirebaseFirestore.instance.collection('uids');
 
@@ -48,6 +52,7 @@ class DataBaseService {
   }
 
   Stream<List<Project>?> get projectListStream {
+    print("Stream<List<Project>?> get projectListStream"); 
     return userDataCollection
         .doc(uid)
         .collection('notes')
@@ -58,8 +63,8 @@ class DataBaseService {
 
   List<Project> _projectListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
-           print("++++++++++++++++++++++++++++++++++++++++++++++++++++"); 
-      print(doc); 
+      //      print("++++++++++++++++++++++++++++++++++++++++++++++++++++"); 
+      // print(doc); 
       return Project(
         name: doc['name'] ?? '',
         done: doc['done'] ?? false,
@@ -69,33 +74,4 @@ class DataBaseService {
     }).toList();
   }
 
-  Stream<List<Permission>?> get inv_projectListStream {
-    return userDataCollection
-        .doc(uid)
-        .collection('permissons')
-        .snapshots()
-        .map(_inv_projectListFromSnapshot);
-  }
-
-  List<Permission> _inv_projectListFromSnapshot(QuerySnapshot snapshot) {
-    return snapshot.docs.map((doc) {
-      return Permission(uid: doc["invUid"], name: doc["invProject"]);
-    }).toList();
-  }
-  //get user doc stream
-/*
-
-  UserData _userDataFromSnapshot(DocumentSnapshot snapshot)
-  {
-    return UserData(
-        uid: uid,
-        name: snapshot['name'],
-        sugars: snapshot['sugars'],
-        strength: snapshot['strength']);
-  }
-
-  Stream<UserData> get userData {
-    return brewCollection.doc(uid).snapshots().map(_userDataFromSnapshot);
-  }
-*/
 }

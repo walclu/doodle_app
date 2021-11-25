@@ -1,5 +1,9 @@
 import 'package:doodle_app/models/inv_project.dart';
+import 'package:doodle_app/models/permission.dart';
 import 'package:doodle_app/models/project.dart';
+import 'package:doodle_app/models/user_mod.dart';
+import 'package:doodle_app/services/data_base.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:doodle_app/screens/home/project_tile.dart';
@@ -16,9 +20,10 @@ class ProjectList extends StatefulWidget {
 class _ProjectListState extends State<ProjectList> {
   @override
   Widget build(BuildContext context) {
-
+    final user = Provider.of<UserMod>(context); 
     final projects = Provider.of<List<Project>?>(context) ?? [];
-    final invProjects = Provider.of<List<InvProject>?>(context) ?? [];
+    final invProjects = Provider.of<List<Permission>?>(context) ?? [];
+    DataBaseService service = DataBaseService(uid: user.uid); 
     // return ListView.builder(
     //   shrinkWrap: true,
     //   itemCount: projects.length,
@@ -26,15 +31,17 @@ class _ProjectListState extends State<ProjectList> {
     //     return ProjectTile(project: projects[index]);
     // }
     // );
-    return Expanded(
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            for(int i = 0; i<projects.length; i++)
-              ProjectTile(project: projects[i], index: i),
-            for(int i = 0; i<invProjects.length; i++)
-              InvProjectTile(project: invProjects[i], index: i)
-          ],
+    return StreamProvider.value(
+      value: service.inv_projectListStream,
+       initialData: null,
+      child: Expanded(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              for(int i = 0; i<projects.length; i++)
+                ProjectTile(project: projects[i], index: i),
+            ],
+          ),
         ),
       ),
     ); 

@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doodle_app/models/inv_project.dart';
+import 'package:doodle_app/models/permissions.dart';
 import 'package:doodle_app/models/project.dart';
+import 'package:flutter/cupertino.dart';
 
 class DataBaseService {
   final String uid;
+
   DataBaseService({required this.uid});
 
   final CollectionReference userDataCollection =
@@ -36,7 +39,7 @@ class DataBaseService {
   }
 
   Future addUserToProject(String newUserUid, String projectName) async {
-    userDataCollection
+    return await userDataCollection
         .doc(newUserUid)
         .collection('permissions')
         .doc(projectName)
@@ -45,6 +48,14 @@ class DataBaseService {
       'invProject': projectName,
     });
   }
+
+  Future permission2Project(String invUid, String invProject) async {
+    return await userDataCollection
+        .doc(invUid)
+        .collection('notes')
+        .doc(invProject)
+        .get();
+    }
 
   Stream<List<Project>?> get projectListStream {
     return userDataCollection
@@ -57,8 +68,6 @@ class DataBaseService {
 
   List<Project> _projectListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
-           print("++++++++++++++++++++++++++++++++++++++++++++++++++++"); 
-      print(doc); 
       return Project(
         name: doc['name'] ?? '',
         done: doc['done'] ?? false,
@@ -68,31 +77,19 @@ class DataBaseService {
     }).toList();
   }
 
-  Stream<List<InvProject>?> get inv_projectListStream {
+  Stream<List<Permission>?> get permissionListStream {
     return userDataCollection
         .doc(uid)
         .collection('permissions')
         .snapshots()
-        .map(_inv_projectListFromSnapshot);
+        .map(_permissionListFromSnapshot);
   }
-
-  List<InvProject> _inv_projectListFromSnapshot(QuerySnapshot snapshot) {
-    return snapshot.docs.map((document) {
-      dynamic doc_ = userDataCollection.doc(document['invUid']).collection('notes').doc(document['invProject']).snapshots().listen((doc_) {
-        print(doc_['done']);
-      });
-      return InvProject(
-        // name: doc_['name'] ?? '',
-        // done: doc_['done'] ?? false,
-        // data: doc_['data'].cast<int>(),
-        // userPermissions: doc_['permissions'].cast<String>(),
-        name: "",
-        done: true,
-        data: [],
-        userPermissions: []
-      );
+  List<Permission> _permissionListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((document)  {
+      return Permission(invUid: document['invUid'], invProject: document['invProject']);
     }).toList();
   }
+
   //get user doc stream
 /*
 

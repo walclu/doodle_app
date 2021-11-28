@@ -20,8 +20,8 @@ class PermissionHandle extends StatelessWidget {
       await DataBaseService(uid: user.uid).updateProjects(
           value['name'],
           value['done'],
-          [],
-          []);
+          value['data'].cast<int>(),
+          value['permissions'].cast<String>());
     });
 
 

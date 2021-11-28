@@ -156,7 +156,7 @@ class _HomeScreenState extends State<HomeScreen> {
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
                   await DataBaseService(uid: uid)
-                      .updateProjects(projectName, false, [], []);
+                      .updateProjects(projectName, false, [1], []);
                   Navigator.of(context).pop();
                 }
               },

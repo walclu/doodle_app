@@ -1,14 +1,10 @@
-import 'package:doodle_app/models/inv_project.dart';
-import 'package:doodle_app/models/permission.dart';
 import 'package:doodle_app/models/project.dart';
 import 'package:doodle_app/models/user_mod.dart';
-import 'package:doodle_app/screens/home/project_list.dart';
+import 'package:doodle_app/screens/home/home_layout.dart';
 import 'package:doodle_app/services/auth_service.dart';
 import 'package:doodle_app/services/data_base.dart';
 import 'package:doodle_app/shared/loading.dart';
 import 'package:flutter/material.dart';
-import 'package:doodle_app/shared/constants.dart';
-import 'package:doodle_app/screens/drawerScreen/drawerScreen.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -60,52 +56,49 @@ class _HomeScreenState extends State<HomeScreen> {
                 duration: Duration(milliseconds: 200),
                 child: Material(
                   child: Scaffold(
-                    body: Column(children: [
-                      SizedBox(height: 50),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    body: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          isDrawerOpen
-                              ? IconButton(
-                                  icon: Icon(Icons.arrow_back_ios),
-                                  onPressed: () {
-                                    setState(() {
-                                      xOffset = 0;
-                                      yOffset = 0;
-                                      scaleFactor = 1;
-                                      isDrawerOpen = false;
-                                    });
-                                  },
-                                )
-                              : IconButton(
-                                  icon: Icon(Icons.menu),
-                                  onPressed: () {
-                                    setState(() {
-                                      xOffset = 230;
-                                      yOffset = 150;
-                                      scaleFactor = .6;
-                                      isDrawerOpen = true;
-                                    });
-                                  }),
-                          const Text(
-                            'ToDoodle',
-                            style: TextStyle(
-                              color: Colors.black,
-                            ),
-                          ),
-                          IconButton(
-                              icon: Icon(Icons.logout),
-                              onPressed: () async {
-                                setState(() {
-                                  loggedIn = false;
-                                });
-                                dynamic result = await _auth.signOut();
-                              }),
-                        ],
+                      SizedBox(height: 50),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            isDrawerOpen
+                                ? IconButton(
+                                    icon: Icon(Icons.arrow_back_ios),
+                                    onPressed: () {
+                                      setState(() {
+                                        xOffset = 0;
+                                        yOffset = 0;
+                                        scaleFactor = 1;
+                                        isDrawerOpen = false;
+                                      });
+                                    },
+                                  )
+                                : IconButton(
+                                    icon: Icon(Icons.menu),
+                                    onPressed: () {
+                                      setState(() {
+                                        xOffset = 230;
+                                        yOffset = 150;
+                                        scaleFactor = .6;
+                                        isDrawerOpen = true;
+                                      });
+                                    }),
+                            IconButton(
+                                icon: Icon(Icons.logout),
+                                onPressed: () async {
+                                  setState(() {
+                                    loggedIn = false;
+                                  });
+                                  dynamic result = await _auth.signOut();
+                                }),
+                          ],
+                        ),
                       ),
-
-                      //SizedBox(height:20),
-                      ProjectList(),
+                      HomeLayout(),
                     ]),
                     floatingActionButton: FloatingActionButton(
                       onPressed: () {
@@ -136,12 +129,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   key: _formKey,
                   child: TextFormField(
                     validator: (val) =>
-                        val!.isEmpty ? "Enter valid name" : null,
+                    val!.isEmpty ? "Enter valid name" : null,
                     onChanged: (val) {
                       projectName = val;
                     },
                   ),
                 ),
+
               ],
             ),
           ),
@@ -155,6 +149,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   Navigator.of(context).pop();
                 }
               },
+            ),
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: ()  {
+                  Navigator.of(context).pop();
+                }
             ),
           ],
         );

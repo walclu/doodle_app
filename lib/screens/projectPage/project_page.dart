@@ -84,7 +84,7 @@ class _ProjectPageState extends State<ProjectPage> {
           ],
         ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.ac_unit),
+        child: Icon(Icons.add),
         onPressed: (){
           List<int> currentData = projects[widget.index].data; 
           currentData.add(1); 

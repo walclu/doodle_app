@@ -56,6 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 duration: Duration(milliseconds: 200),
                 child: Material(
                   child: Scaffold(
+                    resizeToAvoidBottomInset: false,
                     body: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

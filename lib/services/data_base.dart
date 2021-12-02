@@ -11,13 +11,13 @@ class DataBaseService {
   DataBaseService({required this.uid});
 
   final CollectionReference projectCollection =
-  FirebaseFirestore.instance.collection('projects');
+      FirebaseFirestore.instance.collection('projects');
 
   late final Query unapproved =
-  projectCollection.where("permissions", arrayContains: uid);
+      projectCollection.where("permissions", arrayContains: uid);
 
   final CollectionReference uidCollection =
-  FirebaseFirestore.instance.collection('uids');
+      FirebaseFirestore.instance.collection('uids');
 
   Future updateUserData(String name, String email) async {
     return await projectCollection.doc(uid).set({
@@ -71,7 +71,14 @@ class DataBaseService {
     projectCollection.doc(project.name).set({
       'name': project.name,
       'done': project.done,
-      'todos': project.todos,
+      'todos': project.todos.map((todo) {
+        return {
+          'name': todo.name,
+          'state': todo.state,
+          'whenToBeDone': todo.whenToBeDone,
+          'members': todo.members.cast<String>()
+        };
+      }).toList(),
       'permissions': project.userPermissions,
     });
   }
@@ -89,10 +96,14 @@ class DataBaseService {
         done: doc['done'] ?? false,
         userPermissions: doc['permissions'].cast<String>(),
         todos: doc["todos"].map<Todo>((todo) {
-          return Todo(name: todo["name"], state: todo["state"], whenToBeDone: todo["whenToBeDone"],members: todo["members"].cast<String>());
-            //Todo(name: "", state: false, whenToBeDone: "")
+          return Todo(
+              name: todo["name"],
+              state: todo["state"],
+              whenToBeDone: todo["whenToBeDone"],
+              members: todo["members"].cast<String>());
+          //Todo(name: "", state: false, whenToBeDone: "")
         }).toList(),
       );
-    }).toList() ;
+    }).toList();
   }
 }

@@ -1,9 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:doodle_app/models/inv_project.dart';
-import 'package:doodle_app/models/permission.dart';
 import 'package:doodle_app/models/project.dart';
 import 'package:doodle_app/models/todo.dart';
-import 'package:flutter/cupertino.dart';
 
 class DataBaseService {
   final String uid;
@@ -32,6 +29,15 @@ class DataBaseService {
     });
   }
 
+  Future createTodo(String projectId, Todo todo) async {
+    return await projectCollection.doc(projectId).collection('todos').doc(todo.name).set({
+          'name': todo.name,
+          'state': todo.state,
+          'whenToBeDone': todo.whenToBeDone,
+          'members': todo.members.cast<String>()
+      });
+  }
+
   Future updateProject(String name, bool done, List<Todo> todos,
       List<String> userPermissions) async {
     return await projectCollection.doc(name).set({
@@ -55,12 +61,6 @@ class DataBaseService {
     return await projectCollection.doc(safeProjectName).set({
       'name': safeProjectName,
       'done': done,
-      /*'todos': [{
-        "name": "",
-        "state": false,
-        "members": [],
-        "whenToBeDone": "adsf"
-      }] ,*/
       'todos': [],
       'permissions': userPermissions,
     });
@@ -89,8 +89,6 @@ class DataBaseService {
 
   List<Project> _projectListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
-      //dynamic test = doc['todos'];
-      print(doc['todos']);
       return Project(
         name: doc['name'] ?? '',
         done: doc['done'] ?? false,
@@ -101,7 +99,6 @@ class DataBaseService {
               state: todo["state"],
               whenToBeDone: todo["whenToBeDone"],
               members: todo["members"].cast<String>());
-          //Todo(name: "", state: false, whenToBeDone: "")
         }).toList(),
       );
     }).toList();

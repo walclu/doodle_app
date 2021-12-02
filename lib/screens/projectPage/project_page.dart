@@ -1,6 +1,7 @@
 import 'package:doodle_app/models/project.dart';
 import 'package:doodle_app/models/todo.dart';
 import 'package:doodle_app/models/user_mod.dart';
+import 'package:doodle_app/screens/home/widgets/todo_overview_widget.dart';
 import 'package:doodle_app/screens/projectPage/settings_form.dart';
 import 'package:doodle_app/services/data_base.dart';
 import 'package:doodle_app/shared/constants.dart';
@@ -19,18 +20,24 @@ class ProjectPage extends StatefulWidget {
 class _ProjectPageState extends State<ProjectPage> {
   final _formKey = GlobalKey<FormState>();
   String search = '';
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserMod?>(context);
     final projects = Provider.of<List<Project>?>(context) ?? [];
-    void _showSettingsPanel(){
-      showModalBottomSheet(context: context, builder: (context){
-        return Container(
-          padding:  EdgeInsets.symmetric(vertical: 20, horizontal: 60),
-          child: SettingsForm(projectCopy: projects[widget.index],),
-        );
-      });
+    void _showSettingsPanel() {
+      showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return Container(
+              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 60),
+              child: SettingsForm(
+                projectCopy: projects[widget.index],
+              ),
+            );
+          });
     }
+
     DataBaseService service = DataBaseService(uid: user!.uid);
     return Material(
       child: Scaffold(
@@ -77,21 +84,7 @@ class _ProjectPageState extends State<ProjectPage> {
               ),
             ),
             //
-            Container(
-              child: Column(
-                children: [
-                  for (int i = 0; i < projects[widget.index].todos.length; i++)
-                    Container(
-                      height: 50,
-                      child: Card(
-                        child: Center(
-                          child: Text("${projects[widget.index].todos[i].name}"),
-                        ),
-                      ),
-                    )
-                ],
-              ),
-            ),
+            TodoOverView(index: widget.index),
           ],
         ),
         bottomNavigationBar: BottomAppBar(
@@ -99,9 +92,10 @@ class _ProjectPageState extends State<ProjectPage> {
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              IconButton(onPressed: (){}, icon: Icon(Icons.list)),
-     
-              IconButton(onPressed: (){}, icon: Icon(Icons.vertical_align_bottom_outlined)),
+              IconButton(onPressed: () {}, icon: Icon(Icons.list)),
+              IconButton(
+                  onPressed: () {},
+                  icon: Icon(Icons.vertical_align_bottom_outlined)),
             ],
           ),
           shape: CircularNotchedRectangle(),
@@ -114,7 +108,6 @@ class _ProjectPageState extends State<ProjectPage> {
             setState(() {
               _showSettingsPanel();
             });
-
           },
         ),
       ),

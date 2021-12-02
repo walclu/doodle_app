@@ -3,6 +3,7 @@ import 'package:doodle_app/models/inv_project.dart';
 import 'package:doodle_app/models/permission.dart';
 import 'package:doodle_app/models/project.dart';
 import 'package:doodle_app/models/todo.dart';
+import 'package:flutter/cupertino.dart';
 
 class DataBaseService {
   final String uid;
@@ -10,13 +11,13 @@ class DataBaseService {
   DataBaseService({required this.uid});
 
   final CollectionReference projectCollection =
-      FirebaseFirestore.instance.collection('projects');
+  FirebaseFirestore.instance.collection('projects');
 
   late final Query unapproved =
-      projectCollection.where("permissions", arrayContains: uid);
+  projectCollection.where("permissions", arrayContains: uid);
 
   final CollectionReference uidCollection =
-      FirebaseFirestore.instance.collection('uids');
+  FirebaseFirestore.instance.collection('uids');
 
   Future updateUserData(String name, String email) async {
     return await projectCollection.doc(uid).set({
@@ -75,13 +76,14 @@ class DataBaseService {
 
   List<Project> _projectListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
+      List<Todo> test = doc['todos'];
       return Project(
         name: doc['name'] ?? '',
         done: doc['done'] ?? false,
-        todos: doc['todos'].map((todo){
-          return Todo(name: todo['name'], state: todo['done'], whenToBeDone: todo['whenToBeDone'],members: todo['members'].cast<String>());
-        }).toList<Todo>(),
         userPermissions: doc['permissions'].cast<String>(),
+        todos: test.map((todo){
+          return Todo(name: todo.name, state: todo.state, whenToBeDone: todo.whenToBeDone,members: todo.members.cast<String>());
+        }).toList(),
       );
     }).toList();
   }

@@ -17,7 +17,7 @@ class SettingsForm extends StatefulWidget {
 class _SettingsFormState extends State<SettingsForm> {
 
   final _formKey = GlobalKey<FormState>();
-
+  String userInput = "";
 
 
   @override
@@ -28,7 +28,7 @@ class _SettingsFormState extends State<SettingsForm> {
 
     final user = Provider.of<UserMod>(context);
     //final projects = Provider.of<List<Project>?>(context) ?? [];
-    String userInput = "";
+
     return Form(
           key: _formKey, 
           child:  Column(

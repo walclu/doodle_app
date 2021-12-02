@@ -21,9 +21,11 @@ class ProjectTile extends StatelessWidget {
         Navigator.push(context, MaterialPageRoute(builder: (context) => ProjectPage(index: index))); 
       },
       child: Container(
+
         width: 200,
         child: Card(
-          child: Text(_getProjectName(project.name)),
+          elevation: 5,
+          child: Center(child: Text(_getProjectName(project.name))),
         ),
       ),
     );

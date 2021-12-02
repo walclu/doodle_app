@@ -86,7 +86,7 @@ flutter:
         #- asset: fonts/OpenSans/OpenSans-Regular.ttf
     - family: Montserrat
       fonts:
-        - asset: fonts/Montserrat/Montserrat-Light.ttf
+        - asset: fonts/Montserrat/Montserrat-Regular.ttf
 
   # fonts:
   #   - family: Schyler

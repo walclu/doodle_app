@@ -37,7 +37,7 @@ class DataBaseService {
     return await projectCollection.doc(name).set({
       'name': name,
       'done': done,
-      'todo': todos.map((todo) {
+      'todos': todos.map((todo) {
         return {
           'name': todo.name,
           'state': todo.state,
@@ -55,7 +55,13 @@ class DataBaseService {
     return await projectCollection.doc(safeProjectName).set({
       'name': safeProjectName,
       'done': done,
-      'todos': [{"name": "", "whenToBeDone": "", "state": false, "members": ["Me"]}],
+      /*'todos': [{
+        "name": "",
+        "state": false,
+        "members": [],
+        "whenToBeDone": "adsf"
+      }] ,*/
+      'todos': [],
       'permissions': userPermissions,
     });
   }
@@ -76,15 +82,17 @@ class DataBaseService {
 
   List<Project> _projectListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
-      List<Todo> test = doc['todos'];
+      //dynamic test = doc['todos'];
+      print(doc['todos']);
       return Project(
         name: doc['name'] ?? '',
         done: doc['done'] ?? false,
         userPermissions: doc['permissions'].cast<String>(),
-        todos: test.map((todo){
-          return Todo(name: todo.name, state: todo.state, whenToBeDone: todo.whenToBeDone,members: todo.members.cast<String>());
+        todos: doc["todos"].map<Todo>((todo) {
+          return Todo(name: todo["name"], state: todo["state"], whenToBeDone: todo["whenToBeDone"],members: todo["members"].cast<String>());
+            //Todo(name: "", state: false, whenToBeDone: "")
         }).toList(),
       );
-    }).toList();
+    }).toList() ;
   }
 }

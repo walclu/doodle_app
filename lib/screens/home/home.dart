@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
         StreamProvider<List<Project>?>.value(
           value: DataBaseService(uid: user!.uid).projectListStream,
           initialData: [],
-          // catchError: (_, err) => null,
+          //catchError: (_, err) => null,
         ),
       ],
       child: loggedIn
@@ -56,6 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 duration: Duration(milliseconds: 200),
                 child: Material(
                   child: Scaffold(
+                    backgroundColor: Colors.white54,
                     resizeToAvoidBottomInset: false,
                     body: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

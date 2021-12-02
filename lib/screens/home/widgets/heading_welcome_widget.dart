@@ -17,7 +17,7 @@ class WelcomeWidget extends StatelessWidget {
       children: [
         Text(
           'Good afternoon,',
-          style: style.copyWith(fontSize: 30, color: Colors.grey),
+          style: style.copyWith(fontSize: 30, color: Colors.grey, fontWeight: FontWeight.bold),
         ),
         Text(uid,
             style: style.copyWith(fontSize: 15, color: Colors.lightBlue)

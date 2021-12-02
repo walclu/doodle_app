@@ -81,9 +81,12 @@ class _ProjectPageState extends State<ProjectPage> {
               child: Column(
                 children: [
                   for (int i = 0; i < projects[widget.index].todos.length; i++)
-                    Card(
-                      child: Center(
-                        child: Text("${projects[widget.index].todos[i].name}"),
+                    Container(
+                      height: 50,
+                      child: Card(
+                        child: Center(
+                          child: Text("${projects[widget.index].todos[i].name}"),
+                        ),
                       ),
                     )
                 ],
@@ -108,7 +111,10 @@ class _ProjectPageState extends State<ProjectPage> {
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: () {
-            _showSettingsPanel();
+            setState(() {
+              _showSettingsPanel();
+            });
+
           },
         ),
       ),

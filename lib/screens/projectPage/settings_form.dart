@@ -64,6 +64,7 @@ class _SettingsFormState extends State<SettingsForm> {
                     todos.add(validTodo);
                     await DataBaseService(uid: user.uid).updateProject(widget.projectCopy.name, done,
                         todos, widget.projectCopy.userPermissions);
+                    await DataBaseService(uid: user.uid).createTodo(widget.projectCopy.name, validTodo);
                   }
                   Navigator.pop(context); 
                 },

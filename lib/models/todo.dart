@@ -1,7 +1,7 @@
 class Todo{
 
   String name;
-  String state;
+  bool state;
   String whenToBeDone;
   List <String> members;
 

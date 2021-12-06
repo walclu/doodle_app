@@ -41,6 +41,7 @@ class _ProjectPageState extends State<ProjectPage> {
     DataBaseService service = DataBaseService(uid: user!.uid);
     return Material(
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         body: Column(
           children: [
             SizedBox(height: 60),

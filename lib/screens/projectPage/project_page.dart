@@ -1,7 +1,7 @@
 import 'package:doodle_app/models/project.dart';
 import 'package:doodle_app/models/todo.dart';
 import 'package:doodle_app/models/user_mod.dart';
-import 'package:doodle_app/screens/home/widgets/todo_overview_widget.dart';
+import 'package:doodle_app/screens/projectPage/widgets/todo_overview_widget.dart';
 import 'package:doodle_app/screens/projectPage/settings_form.dart';
 import 'package:doodle_app/services/data_base.dart';
 import 'package:doodle_app/shared/constants.dart';

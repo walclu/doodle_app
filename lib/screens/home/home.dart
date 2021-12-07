@@ -1,11 +1,14 @@
 import 'package:doodle_app/models/project.dart';
 import 'package:doodle_app/models/user_mod.dart';
 import 'package:doodle_app/screens/home/home_layout.dart';
+// import 'package:doodle_app/screens/home/widgets/fab.dart';
 import 'package:doodle_app/services/auth_service.dart';
 import 'package:doodle_app/services/data_base.dart';
 import 'package:doodle_app/shared/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+// import 'package:doodle_app/screens/home/widgets/action_button.dart';
+import 'package:doodle_app/screens/home/widgets/test.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -24,6 +27,23 @@ class _HomeScreenState extends State<HomeScreen> {
   bool loggedIn = true;
 
   final _formKey = GlobalKey<FormState>();
+  static const _actionTitles = ['Create Post', 'Upload Photo', 'Upload Video'];
+  void _showAction(BuildContext context, int index) {
+    showDialog<void>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          content: Text(_actionTitles[index]),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('CLOSE'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,58 +76,76 @@ class _HomeScreenState extends State<HomeScreen> {
                 duration: Duration(milliseconds: 200),
                 child: Material(
                   child: Scaffold(
-                    backgroundColor: Colors.white54,
+                    backgroundColor: Color.fromRGBO(14, 31, 84, 0.03),
                     resizeToAvoidBottomInset: false,
                     body: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                      SizedBox(height: 50),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            isDrawerOpen
-                                ? IconButton(
-                                    icon: Icon(Icons.arrow_back_ios),
-                                    onPressed: () {
+                          SizedBox(height: 50),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                isDrawerOpen
+                                    ? IconButton(
+                                        icon: Icon(Icons.arrow_back_ios),
+                                        onPressed: () {
+                                          setState(() {
+                                            xOffset = 0;
+                                            yOffset = 0;
+                                            scaleFactor = 1;
+                                            isDrawerOpen = false;
+                                          });
+                                        },
+                                      )
+                                    : IconButton(
+                                        icon: Icon(Icons.menu),
+                                        onPressed: () {
+                                          setState(() {
+                                            xOffset = 230;
+                                            yOffset = 150;
+                                            scaleFactor = .6;
+                                            isDrawerOpen = true;
+                                          });
+                                        }),
+                                IconButton(
+                                    icon: Icon(Icons.logout),
+                                    onPressed: () async {
                                       setState(() {
-                                        xOffset = 0;
-                                        yOffset = 0;
-                                        scaleFactor = 1;
-                                        isDrawerOpen = false;
+                                        loggedIn = false;
                                       });
-                                    },
-                                  )
-                                : IconButton(
-                                    icon: Icon(Icons.menu),
-                                    onPressed: () {
-                                      setState(() {
-                                        xOffset = 230;
-                                        yOffset = 150;
-                                        scaleFactor = .6;
-                                        isDrawerOpen = true;
-                                      });
+                                      dynamic result = await _auth.signOut();
                                     }),
-                            IconButton(
-                                icon: Icon(Icons.logout),
-                                onPressed: () async {
-                                  setState(() {
-                                    loggedIn = false;
-                                  });
-                                  dynamic result = await _auth.signOut();
-                                }),
-                          ],
+                              ],
+                            ),
+                          ),
+                          HomeLayout(),
+                        ]),
+                    floatingActionButton: ExpandableFab(
+                      distance: 112.0,
+                      children: [
+                        ActionButton(
+                          onPressed: () => _addProject(context, user.uid),
+                          icon: const Icon(Icons.add),
                         ),
-                      ),
-                      HomeLayout(),
-                    ]),
-                    floatingActionButton: FloatingActionButton(
-                      onPressed: () {
-                        _addProject(context, user.uid);
-                      },
-                      child: Icon(Icons.add),
+                        ActionButton(
+                          onPressed: () => _showAction(context, 1),
+                          icon: const Icon(Icons.group_rounded),
+                        ),
+                                                ActionButton(
+                          onPressed: () => _showAction(context, 1),
+                          icon: const Icon(Icons.group_rounded),
+                        ),
+
+                      ],
                     ),
+                    // floatingActionButton: FloatingActionButton(
+                    //   onPressed: () {
+                    //     _addProject(context, user.uid);
+                    //   },
+                    //   child: Icon(Icons.add),
+                    // ),
                   ),
                 ),
               ),
@@ -131,13 +169,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   key: _formKey,
                   child: TextFormField(
                     validator: (val) =>
-                    val!.isEmpty ? "Enter valid name" : null,
+                        val!.isEmpty ? "Enter valid name" : null,
                     onChanged: (val) {
                       projectName = val;
                     },
                   ),
                 ),
-
               ],
             ),
           ),
@@ -153,11 +190,10 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
             TextButton(
-              child: const Text('Cancel'),
-              onPressed: ()  {
+                child: const Text('Cancel'),
+                onPressed: () {
                   Navigator.of(context).pop();
-                }
-            ),
+                }),
           ],
         );
       },

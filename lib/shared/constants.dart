@@ -52,5 +52,5 @@ List<Map> drawerItems = [
 ];
 
 TextStyle style = TextStyle(
-  fontFamily: 'Montserrat',
+  fontFamily: 'OpenSans',
 );

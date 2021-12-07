@@ -6,6 +6,7 @@ import 'package:doodle_app/screens/home/widgets/database_projects_widgets.dart';
 import 'package:doodle_app/screens/home/widgets/heading_welcome_widget.dart';
 import 'package:doodle_app/shared/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 
@@ -26,14 +27,21 @@ class _HomeLayoutState extends State<HomeLayout> {
   Widget build(BuildContext context) {
     final user = Provider.of<UserMod>(context); 
     return Padding(
-      padding: EdgeInsets.all(15.0),
+      padding: EdgeInsets.all(30.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           WelcomeWidget(uid: user.uid),
+          SizedBox(height: 25,), 
+          Text(
+            "CATEGORIES", 
+            style: GoogleFonts.openSans(
+              fontSize: 12,
+              fontWeight: FontWeight.bold, 
+              color: Colors.grey[500]
+            )
+            ), 
           SizedBox(height:10),
-          DailyTasksWidget(),
-          SizedBox(height:50),
           DatabaseProjectsWidget()
         ],
       ),

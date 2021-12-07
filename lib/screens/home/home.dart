@@ -1,6 +1,7 @@
 import 'package:doodle_app/models/project.dart';
 import 'package:doodle_app/models/user_mod.dart';
 import 'package:doodle_app/screens/home/home_layout.dart';
+import 'package:doodle_app/screens/projectPage/project_form.dart';
 // import 'package:doodle_app/screens/home/widgets/fab.dart';
 import 'package:doodle_app/services/auth_service.dart';
 import 'package:doodle_app/services/data_base.dart';
@@ -60,98 +61,109 @@ class _HomeScreenState extends State<HomeScreen> {
       ],
       child: loggedIn
           ? MaterialApp(
-              home: AnimatedContainer(
-                decoration: isDrawerOpen
-                    ? BoxDecoration(
-                        color: Colors.grey[200],
-                        borderRadius: BorderRadius.circular(30),
-                      )
-                    : BoxDecoration(
-                        color: Colors.grey[200],
-                        borderRadius: BorderRadius.circular(1),
-                      ),
-                transform: Matrix4.translationValues(xOffset, yOffset, 0)
-                  ..scale(scaleFactor)
-                  ..rotateY(isDrawerOpen ? -0.5 : 0),
-                duration: Duration(milliseconds: 200),
-                child: Material(
-                  child: Scaffold(
-                    backgroundColor: Color.fromRGBO(14, 31, 84, 0.03),
-                    resizeToAvoidBottomInset: false,
-                    body: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+        home: AnimatedContainer(
+          decoration: isDrawerOpen
+              ? BoxDecoration(
+            color: Colors.grey[200],
+            borderRadius: BorderRadius.circular(30),
+          )
+              : BoxDecoration(
+            color: Colors.grey[200],
+            borderRadius: BorderRadius.circular(1),
+          ),
+          transform: Matrix4.translationValues(xOffset, yOffset, 0)
+            ..scale(scaleFactor)
+            ..rotateY(isDrawerOpen ? -0.5 : 0),
+          duration: Duration(milliseconds: 200),
+          child: Material(
+            child: Scaffold(
+              backgroundColor: Color.fromRGBO(14, 31, 84, 0.03),
+              resizeToAvoidBottomInset: false,
+              body: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 50),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SizedBox(height: 50),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                isDrawerOpen
-                                    ? IconButton(
-                                        icon: Icon(Icons.arrow_back_ios),
-                                        onPressed: () {
-                                          setState(() {
-                                            xOffset = 0;
-                                            yOffset = 0;
-                                            scaleFactor = 1;
-                                            isDrawerOpen = false;
-                                          });
-                                        },
-                                      )
-                                    : IconButton(
-                                        icon: Icon(Icons.menu),
-                                        onPressed: () {
-                                          setState(() {
-                                            xOffset = 230;
-                                            yOffset = 150;
-                                            scaleFactor = .6;
-                                            isDrawerOpen = true;
-                                          });
-                                        }),
-                                IconButton(
-                                    icon: Icon(Icons.logout),
-                                    onPressed: () async {
-                                      setState(() {
-                                        loggedIn = false;
-                                      });
-                                      dynamic result = await _auth.signOut();
-                                    }),
-                              ],
-                            ),
-                          ),
-                          HomeLayout(),
-                        ]),
-                    floatingActionButton: ExpandableFab(
-                      distance: 112.0,
-                      children: [
-                        ActionButton(
-                          onPressed: () => _addProject(context, user.uid),
-                          icon: const Icon(Icons.add),
-                        ),
-                        ActionButton(
-                          onPressed: () => _showAction(context, 1),
-                          icon: const Icon(Icons.group_rounded),
-                        ),
-                                                ActionButton(
-                          onPressed: () => _showAction(context, 1),
-                          icon: const Icon(Icons.group_rounded),
-                        ),
-
-                      ],
+                          isDrawerOpen
+                              ? IconButton(
+                            icon: Icon(Icons.arrow_back_ios),
+                            onPressed: () {
+                              setState(() {
+                                xOffset = 0;
+                                yOffset = 0;
+                                scaleFactor = 1;
+                                isDrawerOpen = false;
+                              });
+                            },
+                          )
+                              : IconButton(
+                              icon: Icon(Icons.menu),
+                              onPressed: () {
+                                setState(() {
+                                  xOffset = 230;
+                                  yOffset = 150;
+                                  scaleFactor = .6;
+                                  isDrawerOpen = true;
+                                });
+                              }),
+                          IconButton(
+                              icon: Icon(Icons.logout),
+                              onPressed: () async {
+                                setState(() {
+                                  loggedIn = false;
+                                });
+                                dynamic result = await _auth.signOut();
+                              }),
+                        ],
+                      ),
                     ),
-                    // floatingActionButton: FloatingActionButton(
-                    //   onPressed: () {
-                    //     _addProject(context, user.uid);
-                    //   },
-                    //   child: Icon(Icons.add),
-                    // ),
+                    HomeLayout(),
+                  ]),
+              floatingActionButton: ExpandableFab(
+                distance: 112.0,
+                children: [
+                  ActionButton(
+                    onPressed: () => _showSettingsPanel(context, user.uid),
+                    icon: const Icon(Icons.add),
                   ),
-                ),
+                  ActionButton(
+                    onPressed: () => _showAction(context, 1),
+                    icon: const Icon(Icons.group_rounded),
+                  ),
+                  ActionButton(
+                    onPressed: () => _showAction(context, 1),
+                    icon: const Icon(Icons.group_rounded),
+                  ),
+
+                ],
               ),
-            )
+              // floatingActionButton: FloatingActionButton(
+              //   onPressed: () {
+              //     _addProject(context, user.uid);
+              //   },
+              //   child: Icon(Icons.add),
+              // ),
+            ),
+          ),
+        ),
+      )
           : Loading(),
     );
+  }
+
+Future<void> _showSettingsPanel(context, uid) async {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Container(
+            padding: EdgeInsets.symmetric(vertical: 20, horizontal: 60),
+            child: ProjectForm(),
+          );
+        });
   }
 
   Future<void> _addProject(context, uid) async {
@@ -169,7 +181,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   key: _formKey,
                   child: TextFormField(
                     validator: (val) =>
-                        val!.isEmpty ? "Enter valid name" : null,
+                    val!.isEmpty ? "Enter valid name" : null,
                     onChanged: (val) {
                       projectName = val;
                     },

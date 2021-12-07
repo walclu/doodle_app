@@ -4,6 +4,7 @@ import 'package:doodle_app/models/user_mod.dart';
 import 'package:doodle_app/services/data_base.dart';
 import 'package:flutter/material.dart';
 import 'package:doodle_app/shared/constants.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class SettingsForm extends StatefulWidget {
@@ -35,7 +36,10 @@ class _SettingsFormState extends State<SettingsForm> {
             children: [
               Text(
                 'Add a new todo',
-                style: TextStyle(fontSize:  18.0)
+                style: GoogleFonts.openSans(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ), 
               SizedBox(height: 20,), 
               TextFormField(
@@ -45,15 +49,9 @@ class _SettingsFormState extends State<SettingsForm> {
                 onChanged: (val) => setState(()=> userInput = val),
               ), 
               SizedBox(height: 20,), 
-              //dropdown
 
-
-              SizedBox(height: 20,), 
-              //slider
-
-    
               RaisedButton(
-                color: Colors.pink[400], 
+                color: Colors.blue[400],
                 child: Text(
                   'Update', 
                   style: TextStyle(color: Colors.white),

@@ -18,7 +18,7 @@ class _DatabaseProjectsWidgetState extends State<DatabaseProjectsWidget> {
     final user = Provider.of<UserMod>(context);
     final projects = Provider.of<List<Project>?>(context) ?? [];
     return Container(
-      height: 100,
+      height: 110,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: projects.length,

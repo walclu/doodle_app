@@ -10,6 +10,9 @@ class DataBaseService {
   final CollectionReference projectCollection =
       FirebaseFirestore.instance.collection('projects');
 
+  final CollectionReference battleCollection =
+  FirebaseFirestore.instance.collection('battles');
+
   late final Query unapproved =
       projectCollection.where("permissions", arrayContains: uid);
 

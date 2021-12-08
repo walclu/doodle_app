@@ -31,6 +31,7 @@ class _ProjectPageState extends State<ProjectPage> {
           builder: (context) {
             return Container(
               padding: EdgeInsets.symmetric(vertical: 20, horizontal: 60),
+              color: Colors.white,
               child: SettingsForm(
                 projectCopy: projects[widget.index],
               ),
@@ -106,9 +107,9 @@ class _ProjectPageState extends State<ProjectPage> {
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: () {
-            setState(() {
-              _showSettingsPanel();
-            });
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return SettingsForm(projectCopy: projects[widget.index]);
+            }));
           },
         ),
       ),

@@ -42,7 +42,18 @@ class _HomeLayoutState extends State<HomeLayout> {
             )
             ), 
           SizedBox(height:10),
-          DatabaseProjectsWidget()
+          DatabaseProjectsWidget(),
+          SizedBox(height: 30,),
+          Text(
+              "TODAY'S TASKS",
+              style: GoogleFonts.openSans(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey[500]
+              )
+          ),
+          SizedBox(height: 10,),
+
         ],
       ),
     );

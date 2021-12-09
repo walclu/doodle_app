@@ -28,18 +28,22 @@ class ProjectTile extends StatelessWidget {
       }
     }
     numTodos == 0? todosProgress = 0 : todosProgress = todosFinished/numTodos;
-    return GestureDetector(
-      onTap: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context) => ProjectPage(index: index))); 
-      },
-      child: Container(
-        width: 200,
-        child: Card(
-          shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15.0)
+    return Padding(
+      padding: const EdgeInsets.only(right: 20),
+      child: GestureDetector(
+        onTap: (){
+          Navigator.push(context, MaterialPageRoute(builder: (context) => ProjectPage(index: index)));
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(30)),
+            image: DecorationImage(
+              image: AssetImage('images/hässlicherMond.jpg'),
+              fit:BoxFit.cover,
           ),
-          elevation: 5,
-          child: Padding(
+          ),
+          width: 195,
+          child: Container(
             padding: EdgeInsets.only(left: 10, top: 20, bottom: 1, right: 18),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,7 +55,7 @@ class ProjectTile extends StatelessWidget {
                   style: GoogleFonts.openSans(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
-                      color: Colors.grey[500]
+                    color: Colors.white,
                   ),
                   ),
                 ) :
@@ -61,7 +65,7 @@ class ProjectTile extends StatelessWidget {
                     style: GoogleFonts.openSans(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
-                        color: Colors.grey[500]
+                        color: Colors.white,
                     ),
                   ),
                 ),
@@ -72,19 +76,20 @@ class ProjectTile extends StatelessWidget {
                     style: GoogleFonts.openSans(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
+                      color: Colors.white,
                     ),
                   ),
                 ),
                 SizedBox(height: 16,),
                 LinearPercentIndicator(
                   backgroundColor: Colors.grey[200],
-                  width: 164,
+                  width: 167,
                   animation: true,
                   animationDuration: 1800,
                   lineHeight: 6,
                   percent: todosProgress,
                   linearStrokeCap: LinearStrokeCap.roundAll,
-                  progressColor: Color.fromRGBO(253,91,255,1),
+                  progressColor: Colors.lightBlue,
                 ),
               ],
             ),

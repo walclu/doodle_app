@@ -56,58 +56,61 @@ class _TodoOverViewState extends State<TodoOverView> {
         itemCount: todos.length,
         itemBuilder: (context, it) {
           final todo = todos[it];
-          return ListTile(
+          return Dismissible(
             key: ValueKey(todo),
-            contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            title: todo.state? Text(todo.name,
-              style: GoogleFonts.openSans(
-                decoration: TextDecoration.lineThrough,
-                color: Colors.grey,
-              ),
-            ) : Text(todo.name,
-              style: GoogleFonts.openSans(
-                color: Colors.black,
-              ),
-            ),
-            leading: IconButton(
-              onPressed: () async {
-                todos[it].state = !todos[it].state;
+            onDismissed: (direction) async {
+                todos.removeAt(it);
                 await DataBaseService(uid: user!.uid).updateProject(
                     project.name,
                     project.done,
                     todos,
                     project.userPermissions);
-                setState(() {
+            },
+            child: Container(
 
-                });
-              },
-              icon: todo.state? Icon(Icons.check_box_outlined,
-                color: Colors.black,
-              ): Icon(Icons.check_box_outline_blank_rounded,
-                color: Colors.black,
-              ),
-            ),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                IconButton(
-                  icon: Icon(Icons.edit, color: Colors.black),
-                  onPressed: () async {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => TodoForm(project: project, index: it)));
-                  },
+              child: ListTile(
+                key: ValueKey(todo),
+                contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                title: todo.state? Text(todo.name,
+                  style: GoogleFonts.openSans(
+                    decoration: TextDecoration.lineThrough,
+                    color: Colors.grey,
+                  ),
+                ) : Text(todo.name,
+                  style: GoogleFonts.openSans(
+                    color: Colors.black,
+                  ),
                 ),
-                IconButton(
-                  icon: Icon(Icons.delete, color: Colors.black),
+                leading: IconButton(
                   onPressed: () async {
-                    todos.removeAt(it);
+                    todos[it].state = !todos[it].state;
                     await DataBaseService(uid: user!.uid).updateProject(
                         project.name,
                         project.done,
                         todos,
                         project.userPermissions);
+                    setState(() {
+
+                    });
                   },
+                  icon: todo.state? Icon(Icons.check_box_outlined,
+                    color: Colors.black,
+                  ): Icon(Icons.check_box_outline_blank_rounded,
+                    color: Colors.black,
+                  ),
                 ),
-              ],
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.edit, color: Colors.black),
+                      onPressed: () async {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => TodoForm(project: project, index: it)));
+                      },
+                    ),
+                  ],
+                ),
+              ),
             ),
           );
         },

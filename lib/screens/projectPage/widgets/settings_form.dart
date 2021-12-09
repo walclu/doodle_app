@@ -2,34 +2,43 @@ import 'package:doodle_app/models/project.dart';
 import 'package:doodle_app/models/todo.dart';
 import 'package:doodle_app/models/user_mod.dart';
 import 'package:doodle_app/services/data_base.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:doodle_app/shared/constants.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'dart:io';
 
-class TodoForm extends StatefulWidget {
-
-  Project project;
-  int index;
-
-  TodoForm({required this.project, required this.index});
+class SettingsForm extends StatefulWidget {
+  Project projectCopy;
+  SettingsForm({required this.projectCopy});
 
   @override
-  _TodoFormState createState() => _TodoFormState();
+  _SettingsFormState createState() => _SettingsFormState();
 }
 
-class _TodoFormState extends State<TodoForm> {
-
+class _SettingsFormState extends State<SettingsForm> {
   final _formKey = GlobalKey<FormState>();
   String userInput = "";
-  
-  late DateTime oldStartTime; 
-  late DateTime oldFinalTime; 
+  TimeOfDay _time = TimeOfDay(hour: 7, minute: 15);
 
-    Future<DateTime> _selectTime(DateTime initial) async {
-    DateTime selected = initial;
+  // void _selectTime() async {
+  //   final TimeOfDay? newTime = await showTimePicker(
+  //     context: context,
+  //     initialTime: _time,
+  //   );
+  //   if (newTime != null) {
+  //     setState(() {
+  //       _time = newTime;
+  //       print(_time.toString());
+  //     });
+  //   }
+  // }
+  DateTime finalTime = DateTime.now().add(Duration(days: 1)); 
+  DateTime startTime = DateTime.now().add(Duration(days: 0)); 
+
+  Future<DateTime> _selectTime() async {
+    DateTime selected = DateTime.now() ; 
     await DatePicker.showDateTimePicker(context,
         showTitleActions: true,
         minTime: DateTime.now(),
@@ -41,17 +50,14 @@ class _TodoFormState extends State<TodoForm> {
   }
 
   @override
- Widget build(BuildContext context) {
-    String name = widget.project.name;
-    bool done = widget.project.done;
-    List<Todo> todos = widget.project.todos;
-    oldFinalTime = DateTime.parse(widget.project.todos[widget.index].whenToBeDone); 
-    oldStartTime = DateTime.parse(widget.project.todos[widget.index].whenToStart); 
-    
+  Widget build(BuildContext context) {
+    String name = widget.projectCopy.name;
+    bool done = widget.projectCopy.done;
+    List<Todo> todos = widget.projectCopy.todos;
+
     final user = Provider.of<UserMod>(context);
-    //final projects = Provider.of<List<Pro ject>?>(context) ?? [];
-    DateTime newStartTime = oldStartTime; 
-    DateTime newFinalTime = oldFinalTime;
+    //final projects = Provider.of<List<Project>?>(context) ?? [];
+
     return Material(
       color: Colors.white,
       child: Form(
@@ -80,7 +86,7 @@ class _TodoFormState extends State<TodoForm> {
                 height: 150,
               ),
               TextFormField(
-                initialValue: todos[widget.index].name,
+                initialValue: "",
                 //decoration: textInputDecoration,
                 decoration: const InputDecoration.collapsed(
                     hintText: "Enter todo name"),
@@ -102,8 +108,8 @@ class _TodoFormState extends State<TodoForm> {
                     ),
                     child: GestureDetector(
                       onTap: () async {
-                        DateTime selectedTime = await _selectTime(oldStartTime);
-                        newStartTime = selectedTime; 
+                        DateTime selectedTime = await _selectTime();
+                        startTime = selectedTime; 
                       },
                       child: Row(
                         children: [
@@ -133,8 +139,8 @@ class _TodoFormState extends State<TodoForm> {
                     ),
                     child: GestureDetector(
                       onTap: () async {
-                        DateTime selectedTime = await _selectTime(oldFinalTime);
-                        newFinalTime = selectedTime; 
+                        DateTime selectedTime = await _selectTime();
+                        finalTime = selectedTime; 
                       },
                       child: Row(
                         children: [
@@ -171,20 +177,18 @@ class _TodoFormState extends State<TodoForm> {
                   child: GestureDetector(
                     onTap: () async {
                       if (_formKey.currentState!.validate()) {
-                        // Todo validTodo = Todo(
-                        //     name: userInput,
-                        //     state: false,
-                        //     whenToStart: newStartTime.toString(),
-                        //     whenToBeDone: newFinalTime.toString(),
-                        //     members: []);
-                        // todos.add(validTodo);
-                        todos[widget.index].whenToBeDone = newFinalTime.toString(); 
-                        todos[widget.index].whenToStart = newStartTime.toString(); 
+                        Todo validTodo = Todo(
+                            name: userInput,
+                            state: false,
+                            whenToStart: startTime.toString(),
+                            whenToBeDone: finalTime.toString(),
+                            members: []);
+                        todos.add(validTodo);
                         await DataBaseService(uid: user.uid).updateProject(
-                            widget.project.name,
+                            widget.projectCopy.name,
                             done,
                             todos,
-                            widget.project.userPermissions);
+                            widget.projectCopy.userPermissions);
                         // await DataBaseService(uid: user.uid)
                         //     .createTodo(widget.projectCopy.name, validTodo);
                       }
@@ -194,7 +198,7 @@ class _TodoFormState extends State<TodoForm> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Edit',
+                          'New Task',
                           style: GoogleFonts.openSans(
                             color: Colors.white,
                             fontSize: 15,
@@ -219,4 +223,3 @@ class _TodoFormState extends State<TodoForm> {
     );
   }
 }
-

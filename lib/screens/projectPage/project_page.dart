@@ -2,7 +2,7 @@ import 'package:doodle_app/models/project.dart';
 import 'package:doodle_app/models/todo.dart';
 import 'package:doodle_app/models/user_mod.dart';
 import 'package:doodle_app/screens/projectPage/widgets/todo_overview_widget.dart';
-import 'package:doodle_app/screens/projectPage/settings_form.dart';
+import 'package:doodle_app/screens/projectPage/widgets/settings_form.dart';
 import 'package:doodle_app/services/data_base.dart';
 import 'package:doodle_app/shared/constants.dart';
 import 'package:flutter/material.dart';
@@ -89,21 +89,7 @@ class _ProjectPageState extends State<ProjectPage> {
             TodoOverView(index: widget.index),
           ],
         ),
-        bottomNavigationBar: BottomAppBar(
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              IconButton(onPressed: () {}, icon: Icon(Icons.list)),
-              IconButton(
-                  onPressed: () {},
-                  icon: Icon(Icons.vertical_align_bottom_outlined)),
-            ],
-          ),
-          shape: CircularNotchedRectangle(),
-          color: Colors.blueGrey,
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: () {

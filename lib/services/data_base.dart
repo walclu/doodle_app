@@ -32,14 +32,15 @@ class DataBaseService {
     });
   }
 
-  Future createTodo(String projectId, Todo todo) async {
-    return await projectCollection.doc(projectId).collection('todos').doc(todo.name).set({
-          'name': todo.name,
-          'state': todo.state,
-          'whenToBeDone': todo.whenToBeDone,
-          'members': todo.members.cast<String>()
-      });
-  }
+  // Future createTodo(String projectId, Todo todo) async {
+  //   return await projectCollection.doc(projectId).collection('todos').doc(todo.name).set({
+  //         'name': todo.name,
+  //         'state': todo.state,
+  //         'w'
+  //         'whenToBeDone': todo.whenToBeDone,
+  //         'members': todo.members.cast<String>()
+  //     });
+  // }
 
   Future updateProject(String name, bool done, List<Todo> todos,
       List<String> userPermissions) async {
@@ -50,6 +51,7 @@ class DataBaseService {
         return {
           'name': todo.name,
           'state': todo.state,
+          'whenToStart' : todo.whenToStart, 
           'whenToBeDone': todo.whenToBeDone,
           'members': todo.members.cast<String>()
         };
@@ -78,6 +80,7 @@ class DataBaseService {
         return {
           'name': todo.name,
           'state': todo.state,
+          'whenToStart' : todo.whenToStart,
           'whenToBeDone': todo.whenToBeDone,
           'members': todo.members.cast<String>()
         };
@@ -100,6 +103,7 @@ class DataBaseService {
           return Todo(
               name: todo["name"],
               state: todo["state"],
+              whenToStart: todo["whenToStart"],
               whenToBeDone: todo["whenToBeDone"],
               members: todo["members"].cast<String>());
         }).toList(),

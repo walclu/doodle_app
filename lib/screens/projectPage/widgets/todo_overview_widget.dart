@@ -19,16 +19,16 @@ class TodoOverView extends StatefulWidget {
 
 class _TodoOverViewState extends State<TodoOverView> {
 
-  Future<void> _showTodoPanel(context, Project project, int index) async {
-    showModalBottomSheet(
-        context: context,
-        builder: (context) {
-          return Container(
-            padding: EdgeInsets.symmetric(vertical: 20, horizontal: 60),
-            child: TodoForm(project: project, index: index,),
-          );
-        });
-  }
+  // Future<void> _showTodoPanel(context, Project project, int index) async {
+  //   showModalBottomSheet(
+  //       context: context,
+  //       builder: (context) {
+  //         return Container(
+  //           padding: EdgeInsets.symmetric(vertical: 20, horizontal: 60),
+  //           child: TodoForm(project: project, index: index,),
+  //         );
+  //       });
+  // }
   @override
   Widget build(BuildContext context) {
     final projects = Provider.of<List<Project>?>(context) ?? [];
@@ -93,7 +93,7 @@ class _TodoOverViewState extends State<TodoOverView> {
                 IconButton(
                   icon: Icon(Icons.edit, color: Colors.black),
                   onPressed: () async {
-                    _showTodoPanel(context, project, it);
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => TodoForm(project: project, index: it)));
                   },
                 ),
                 IconButton(

@@ -122,7 +122,6 @@ class _TodoFormState extends State<TodoForm> {
                     ),
                   ),
 
-
                    Container(
                     width: 100,
                     padding: EdgeInsets.all(10),
@@ -171,24 +170,16 @@ class _TodoFormState extends State<TodoForm> {
                   child: GestureDetector(
                     onTap: () async {
                       if (_formKey.currentState!.validate()) {
-                        // Todo validTodo = Todo(
-                        //     name: userInput,
-                        //     state: false,
-                        //     whenToStart: newStartTime.toString(),
-                        //     whenToBeDone: newFinalTime.toString(),
-                        //     members: []);
-                        // todos.add(validTodo);
                         todos[widget.index].whenToBeDone = newFinalTime.toString(); 
-                        todos[widget.index].whenToStart = newStartTime.toString(); 
+                        todos[widget.index].whenToStart = newStartTime.toString();
+                        todos[widget.index].name = userInput;
                         await DataBaseService(uid: user.uid).updateProject(
                             widget.project.name,
                             done,
                             todos,
                             widget.project.userPermissions);
-                        // await DataBaseService(uid: user.uid)
-                        //     .createTodo(widget.projectCopy.name, validTodo);
+                        Navigator.pop(context);
                       }
-                      Navigator.pop(context);
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,

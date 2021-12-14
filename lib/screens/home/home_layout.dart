@@ -27,7 +27,7 @@ class _HomeLayoutState extends State<HomeLayout> {
   Widget build(BuildContext context) {
     final user = Provider.of<UserMod>(context); 
     return Padding(
-      padding: EdgeInsets.all(30.0),
+      padding: EdgeInsets.all(40.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -53,6 +53,7 @@ class _HomeLayoutState extends State<HomeLayout> {
               )
           ),
           SizedBox(height: 10,),
+          DailyTasksWidget(),
 
         ],
       ),

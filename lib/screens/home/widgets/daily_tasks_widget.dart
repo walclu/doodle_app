@@ -61,7 +61,7 @@ class _DailyTasksWidgetState extends State<DailyTasksWidget> {
                 int projNum = dailyTasks[index]['projNum'];
                 int todoNum = dailyTasks[index]['todoNum'];
                 List<Todo> temp = projects[projNum].todos;
-                temp[index].state = !temp[index].state;
+                temp[todoNum].state = !temp[todoNum].state;
                 await DataBaseService(uid: user.uid).updateProject(
                     projects[projNum].name,
                     projects[projNum].done,

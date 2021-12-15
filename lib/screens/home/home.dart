@@ -84,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     SizedBox(height: 50),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(4.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -127,7 +127,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 distance: 112.0,
                 children: [
                   ActionButton(
-                    onPressed: () => _showSettingsPanel(context, user.uid),
+                    onPressed: () async {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ProjectForm()));
+                    },
                     icon: const Icon(Icons.add),
                   ),
                   ActionButton(
@@ -141,12 +143,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
                 ],
               ),
-              // floatingActionButton: FloatingActionButton(
-              //   onPressed: () {
-              //     _addProject(context, user.uid);
-              //   },
-              //   child: Icon(Icons.add),
-              // ),
             ),
           ),
         ),
@@ -196,7 +192,7 @@ Future<void> _showSettingsPanel(context, uid) async {
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
                   await DataBaseService(uid: uid)
-                      .createProject(projectName, false, [], [uid]);
+                      .createProject(projectName, false, [], [uid], 0);
                   Navigator.of(context).pop();
                 }
               },

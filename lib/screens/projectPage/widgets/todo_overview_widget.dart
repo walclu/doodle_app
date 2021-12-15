@@ -51,7 +51,9 @@ class _TodoOverViewState extends State<TodoOverView> {
               project.name,
               project.done,
               todos,
-              project.userPermissions);
+              project.userPermissions,
+              project.color
+          );
         },
         itemCount: todos.length,
         itemBuilder: (context, it) {
@@ -64,7 +66,9 @@ class _TodoOverViewState extends State<TodoOverView> {
                     project.name,
                     project.done,
                     todos,
-                    project.userPermissions);
+                    project.userPermissions,
+                    project.color
+                );
             },
             child: Container(
 
@@ -88,7 +92,9 @@ class _TodoOverViewState extends State<TodoOverView> {
                         project.name,
                         project.done,
                         todos,
-                        project.userPermissions);
+                        project.userPermissions,
+                        project.color
+                    );
                     setState(() {
 
                     });

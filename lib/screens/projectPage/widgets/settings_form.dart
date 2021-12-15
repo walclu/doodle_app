@@ -54,7 +54,7 @@ class _SettingsFormState extends State<SettingsForm> {
     String name = widget.projectCopy.name;
     bool done = widget.projectCopy.done;
     List<Todo> todos = widget.projectCopy.todos;
-
+    int color = widget.projectCopy.color;
     final user = Provider.of<UserMod>(context);
     //final projects = Provider.of<List<Project>?>(context) ?? [];
 
@@ -188,9 +188,9 @@ class _SettingsFormState extends State<SettingsForm> {
                             widget.projectCopy.name,
                             done,
                             todos,
-                            widget.projectCopy.userPermissions);
-                        // await DataBaseService(uid: user.uid)
-                        //     .createTodo(widget.projectCopy.name, validTodo);
+                            widget.projectCopy.userPermissions,
+                            color
+                        );
                       }
                       Navigator.pop(context);
                     },

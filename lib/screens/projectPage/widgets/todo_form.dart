@@ -177,7 +177,9 @@ class _TodoFormState extends State<TodoForm> {
                             widget.project.name,
                             done,
                             todos,
-                            widget.project.userPermissions);
+                            widget.project.userPermissions,
+                          widget.project.color
+                        );
                         Navigator.pop(context);
                       }
                     },

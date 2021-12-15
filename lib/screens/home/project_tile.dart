@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:doodle_app/models/project.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:provider/provider.dart';
 
 class ProjectTile extends StatelessWidget {
   //const ProjectTile({Key? key}) : super(key: key);
 
-  final Project project;
   final int index; 
-  ProjectTile({required this.project, required this.index});
+  ProjectTile({required this.index});
 
   String _getProjectName(String name){
     int indexUnderscore = name.indexOf('_');
@@ -19,6 +19,8 @@ class ProjectTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final projects = Provider.of<List<Project>?>(context) ?? [];
+    final Project project = projects[index];
     double todosProgress = 0;
     int numTodos = project.todos.length;
     int todosFinished = 0;
@@ -82,14 +84,14 @@ class ProjectTile extends StatelessWidget {
                 ),
                 SizedBox(height: 16,),
                 LinearPercentIndicator(
-                  backgroundColor: Colors.grey[200],
+                  backgroundColor: Colors.white,
                   width: 167,
                   animation: true,
                   animationDuration: 1800,
                   lineHeight: 6,
                   percent: todosProgress,
                   linearStrokeCap: LinearStrokeCap.roundAll,
-                  progressColor: Colors.lightBlue,
+                  progressColor: Color(project.color),
                 ),
               ],
             ),

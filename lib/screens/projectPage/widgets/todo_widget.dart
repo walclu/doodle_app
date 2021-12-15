@@ -34,7 +34,8 @@ class _TodoWidgetState extends State<TodoWidget> {
                       projects[widget.projectIndex].name,
                       projects[widget.projectIndex].done,
                       projects[widget.projectIndex].todos,
-                    projects[widget.projectIndex].userPermissions,
+                      projects[widget.projectIndex].userPermissions,
+                      projects[widget.projectIndex].color
                   );
                 },
                   child: Icon(Icons.check_circle, color: Colors.lightGreenAccent,)
@@ -48,6 +49,7 @@ class _TodoWidgetState extends State<TodoWidget> {
                   projects[widget.projectIndex].done,
                   projects[widget.projectIndex].todos,
                   projects[widget.projectIndex].userPermissions,
+                  projects[widget.projectIndex].color,
                 );
               },
               child: Icon(Icons.check_circle, color: Colors.grey,)

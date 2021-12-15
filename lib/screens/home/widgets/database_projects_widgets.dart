@@ -23,7 +23,7 @@ class _DatabaseProjectsWidgetState extends State<DatabaseProjectsWidget> {
         scrollDirection: Axis.horizontal,
         itemCount: projects.length,
         itemBuilder: (context, it) {
-          return ProjectTile(project: projects[it], index: it);
+          return ProjectTile(index: it);
         },
       ),
     );

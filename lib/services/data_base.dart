@@ -43,10 +43,11 @@ class DataBaseService {
   // }
 
   Future updateProject(String name, bool done, List<Todo> todos,
-      List<String> userPermissions) async {
+      List<String> userPermissions, int color) async {
     return await projectCollection.doc(name).set({
       'name': name,
       'done': done,
+      'color': color,
       'todos': todos.map((todo) {
         return {
           'name': todo.name,
@@ -61,11 +62,12 @@ class DataBaseService {
   }
 
   Future createProject(String name, bool done, List<Todo> todos,
-      List<String> userPermissions) async {
+      List<String> userPermissions, int color) async {
     String safeProjectName = name + "_" + uid;
     return await projectCollection.doc(safeProjectName).set({
       'name': safeProjectName,
       'done': done,
+      'color': color,
       'todos': [],
       'permissions': userPermissions,
     });
@@ -76,6 +78,7 @@ class DataBaseService {
     projectCollection.doc(project.name).set({
       'name': project.name,
       'done': project.done,
+      'color': project.color,
       'todos': project.todos.map((todo) {
         return {
           'name': todo.name,
@@ -98,6 +101,7 @@ class DataBaseService {
       return Project(
         name: doc['name'] ?? '',
         done: doc['done'] ?? false,
+        color: doc['color'] ?? 0xff443a49,
         userPermissions: doc['permissions'].cast<String>(),
         todos: doc["todos"].map<Todo>((todo) {
           return Todo(

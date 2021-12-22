@@ -172,7 +172,7 @@ class _TodoFormState extends State<TodoForm> {
                       if (_formKey.currentState!.validate()) {
                         todos[widget.index].whenToBeDone = newFinalTime.toString(); 
                         todos[widget.index].whenToStart = newStartTime.toString();
-                        todos[widget.index].name = userInput;
+                        todos[widget.index].name = userInput == '' ? todos[widget.index].name : userInput;
                         await DataBaseService(uid: user.uid).updateProject(
                             widget.project.name,
                             done,

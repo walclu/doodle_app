@@ -53,16 +53,12 @@ class _DailyTasksWidgetState extends State<DailyTasksWidget> {
       child: MediaQuery.removePadding(
         context: context,
         removeTop: true,
-        child: ReorderableListView.builder(
-          onReorder: (oldIndex, newIndex) async {
-
-          },
+        child: ListView.builder(
           itemCount: dailyTasks.length,
           itemBuilder: (context, index) {
             int projNum = dailyTasks[index]['projNum'];
             return GestureDetector(
-              key: ValueKey(dailyTasks[index]['todo']),
-              onLongPress: () async {
+              onDoubleTap:  () async {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => TodoForm(project: projects[projNum], index: index)));
               },
               onTap: () async {

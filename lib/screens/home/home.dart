@@ -2,13 +2,11 @@ import 'package:doodle_app/models/project.dart';
 import 'package:doodle_app/models/user_mod.dart';
 import 'package:doodle_app/screens/home/home_layout.dart';
 import 'package:doodle_app/screens/projectPage/project_form.dart';
-// import 'package:doodle_app/screens/home/widgets/fab.dart';
 import 'package:doodle_app/services/auth_service.dart';
 import 'package:doodle_app/services/data_base.dart';
 import 'package:doodle_app/shared/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-// import 'package:doodle_app/screens/home/widgets/action_button.dart';
 import 'package:doodle_app/screens/home/widgets/test.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -133,8 +131,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     icon: const Icon(Icons.add),
                   ),
                   ActionButton(
-                    onPressed: () => _showAction(context, 1),
-                    icon: const Icon(Icons.group_rounded),
+                    onPressed: () async {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ProjectForm()));
+                    },
+                    icon: const Icon(Icons.checklist_rtl_rounded),
                   ),
                   ActionButton(
                     onPressed: () => _showAction(context, 1),

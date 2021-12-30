@@ -32,6 +32,7 @@ class _HomeLayoutState extends State<HomeLayout> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           WelcomeWidget(uid: user.uid),
+
           SizedBox(height: 25,), 
           Text(
             "CATEGORIES", 

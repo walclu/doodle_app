@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:doodle_app/models/daily_task.dart';
 import 'package:doodle_app/models/project.dart';
 import 'package:doodle_app/models/todo.dart';
 
@@ -19,6 +20,9 @@ class DataBaseService {
   final CollectionReference uidCollection =
       FirebaseFirestore.instance.collection('uids');
 
+  final CollectionReference dailyTaskCollection =
+  FirebaseFirestore.instance.collection('dailyTasks');
+
   Future updateUserData(String name, String email) async {
     return await projectCollection.doc(uid).set({
       'name': name,
@@ -32,15 +36,17 @@ class DataBaseService {
     });
   }
 
-  // Future createTodo(String projectId, Todo todo) async {
-  //   return await projectCollection.doc(projectId).collection('todos').doc(todo.name).set({
-  //         'name': todo.name,
-  //         'state': todo.state,
-  //         'w'
-  //         'whenToBeDone': todo.whenToBeDone,
-  //         'members': todo.members.cast<String>()
-  //     });
-  // }
+   Future createDailyTask(String uid, List<DailyTasks> dailyTasks) async {
+       String docName = "dailyTasks" + "_" + uid;
+        return await dailyTaskCollection.doc(docName).set({
+          'dailyTasks': dailyTasks.map((dailyTask) {
+            return {
+              'name': dailyTask.name,
+              'state': dailyTask.done,
+            };
+          }).toList(),
+     });
+   }
 
   Future updateProject(String name, bool done, List<Todo> todos,
       List<String> userPermissions, int color) async {

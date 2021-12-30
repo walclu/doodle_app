@@ -1,7 +1,6 @@
 import 'package:doodle_app/models/user_mod.dart';
 import 'package:doodle_app/services/data_base.dart';
 import 'package:flutter/material.dart';
-import 'package:doodle_app/shared/constants.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';

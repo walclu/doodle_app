@@ -46,7 +46,7 @@ class _HomeLayoutState extends State<HomeLayout> {
           DatabaseProjectsWidget(),
           SizedBox(height: 30,),
           Text(
-              "TODAY'S TASKS",
+              "TODAY'S Project TASKS",
               style: GoogleFonts.openSans(
                   fontSize: 12,
                   fontWeight: FontWeight.bold,

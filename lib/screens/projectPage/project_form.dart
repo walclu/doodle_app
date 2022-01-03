@@ -69,10 +69,10 @@ class _ProjectFormState extends State<ProjectForm> {
                 alignment: Alignment.centerLeft,
                 child: Container(
                   width: 100,
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(30)),
-                    border: Border.all(color: Color.fromRGBO(234, 239, 255, 1)),
+                    borderRadius: const BorderRadius.all(Radius.circular(30)),
+                    border: Border.all(color: const Color.fromRGBO(234, 239, 255, 1)),
                     color: Colors.white,
                   ),
                   child: GestureDetector(
@@ -110,10 +110,10 @@ class _ProjectFormState extends State<ProjectForm> {
                           Icons.circle_outlined,
                           color: currentColor,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
-                        Text(
+                        const Text(
                           'Color',
                         ),
                       ],
@@ -136,7 +136,7 @@ class _ProjectFormState extends State<ProjectForm> {
                   ),
                   child: GestureDetector(
                     onTap: () async {
-                      print(int.parse(currentColor.toString().substring(6,16)));
+                      //print(int.parse(currentColor.toString().substring(6,16)));
                       if (_formKey.currentState!.validate()) {
                         await DataBaseService(uid: user.uid)
                             .createProject(userInput, false, [], [user.uid], int.parse(currentColor.toString().substring(6,16)));
@@ -153,10 +153,10 @@ class _ProjectFormState extends State<ProjectForm> {
                             fontSize: 15,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 5,
                         ),
-                        Icon(
+                        const Icon(
                           Icons.expand_less_rounded,
                           color: Colors.white,
                         ),

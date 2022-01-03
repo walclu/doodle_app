@@ -1,7 +1,7 @@
-class DailyTasks {
+class DailyTask {
   String name;
   bool done;
 
-  DailyTasks({required this.name, required this.done});
+  DailyTask({required this.name, required this.done});
 
 }

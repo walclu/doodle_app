@@ -8,24 +8,25 @@ class DataBaseService {
 
   DataBaseService({required this.uid});
 
+  // UID
+  final CollectionReference uidCollection =
+      FirebaseFirestore.instance.collection('uids');
+
+  //PROJEKT
   final CollectionReference projectCollection =
       FirebaseFirestore.instance.collection('projects');
 
   late final Query unapproved =
       projectCollection.where("permissions", arrayContains: uid);
 
-  final CollectionReference uidCollection =
-      FirebaseFirestore.instance.collection('uids');
-
+  //DAILY
   final CollectionReference dailyTaskCollection =
   FirebaseFirestore.instance.collection('dailyTasks');
 
-  Future updateUserData(String name, String email) async {
-    return await projectCollection.doc(uid).set({
-      'name': name,
-      'email': email,
-    });
-  }
+  late final Query unapprovedDaily =
+  projectCollection.where("permissions", arrayContains: uid);
+
+
 
   Future updateUids(String email, String uid) async {
     return await uidCollection.doc(email).set({
@@ -33,19 +34,16 @@ class DataBaseService {
     });
   }
 
-
-  Future updateDailyTask(String uid, List<DailyTask> dailyTasks) async {
-    String docName =  uid;
-    return await dailyTaskCollection.doc(docName).set({
-      'dailyTasks': dailyTasks.map((dailyTask) {
-        return {
-          'name': dailyTask.name,
-          'state': dailyTask.done,
-        };
-      }).toList(),
+  //USERDATA
+  Future updateUserData(String name, String email) async {
+    return await projectCollection.doc(uid).set({
+      'name': name,
+      'email': email,
     });
   }
 
+
+  //PROJEKT
   Future updateProject(String name, bool done, List<Todo> todos,
       List<String> userPermissions, int color) async {
     return await projectCollection.doc(name).set({
@@ -56,7 +54,7 @@ class DataBaseService {
         return {
           'name': todo.name,
           'state': todo.state,
-          'whenToStart' : todo.whenToStart, 
+          'whenToStart' : todo.whenToStart,
           'whenToBeDone': todo.whenToBeDone,
           'members': todo.members.cast<String>()
         };
@@ -96,18 +94,6 @@ class DataBaseService {
     });
   }
 
-  Stream<List<DailyTask>> get dailyTaskListStream{
-    return dailyTaskCollection.doc(uid).snapshots().map(_dailyTaskListFromSnapshot as Query);
-  }
-
-  List<DailyTask> _dailyTaskListFromSnapshot(QuerySnapshot snapshot) {
-    return snapshot.docs.map((doc) {
-      return DailyTask(
-        name: doc['name'] ?? '',
-        done:doc['state'] ?? false
-    );}).toList();
-  }
-
   Stream<List<Project>?> get projectListStream {
     return unapproved.snapshots().map(_projectListFromSnapshot);
   }
@@ -129,6 +115,32 @@ class DataBaseService {
         }).toList(),
       );
     }).toList();
+  }
+
+  //DAILY-TASKS
+  Future updateDailyTask(String uid, List<DailyTask> dailyTasks) async {
+    String docName =  uid;
+    return await dailyTaskCollection.doc(docName).set({
+      'dailyTasks': dailyTasks.map((dailyTask) {
+        return {
+          'name': dailyTask.name,
+          'done': dailyTask.done,
+        };
+      }).toList(),
+    });
+  }
+
+  Stream<List<DailyTask>> get dailyTaskListStream{
+    return unapprovedDaily.snapshots().map(_dailyTaskListFromSnapshot);
+  }
+
+
+  List<DailyTask> _dailyTaskListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      return DailyTask(
+        name: doc['name'] ?? '',
+        done:doc['done'] ?? false
+    );}).toList();
   }
 
   }

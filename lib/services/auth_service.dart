@@ -1,3 +1,4 @@
+ import 'package:doodle_app/models/dailytaskfirestore.dart';
 import 'package:doodle_app/models/user_mod.dart';
 import 'package:doodle_app/services/data_base.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -21,6 +22,7 @@ class AuthService {
       UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       User? user = result.user;
       await DataBaseService(uid: user!.uid).updateUserData(email, email);
+      await DataBaseService(uid: user.uid).updateDailyTask(DailyTaskFirestore( permissions: [user.uid], dailies: []));
       return _userFromFirebaseUser(user);
     } catch(e){
       print(e.toString());

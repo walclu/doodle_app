@@ -39,10 +39,7 @@ class ProjectTile extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(30)),
-            image: DecorationImage(
-              image: AssetImage('images/hässlicherMond.jpg'),
-              fit:BoxFit.cover,
-          ),
+            color: Colors.blueGrey
           ),
           width: 195,
           child: Container(

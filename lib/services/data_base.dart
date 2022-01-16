@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doodle_app/models/daily_task.dart';
+import 'package:doodle_app/models/dailytaskfirestore.dart';
 import 'package:doodle_app/models/project.dart';
 import 'package:doodle_app/models/todo.dart';
 
@@ -24,7 +25,7 @@ class DataBaseService {
   FirebaseFirestore.instance.collection('dailyTasks');
 
   late final Query unapprovedDaily =
-  projectCollection.where("permissions", arrayContains: uid);
+  dailyTaskCollection.where("permissions", arrayContains: uid);
 
 
 
@@ -118,29 +119,35 @@ class DataBaseService {
   }
 
   //DAILY-TASKS
-  Future updateDailyTask(String uid, List<DailyTask> dailyTasks) async {
-    String docName =  uid;
-    return await dailyTaskCollection.doc(docName).set({
-      'dailyTasks': dailyTasks.map((dailyTask) {
+  Future updateDailyTask(DailyTaskFirestore dailyTaskFirestore) async {
+    return await dailyTaskCollection.doc(uid).set({
+      'dailies': dailyTaskFirestore.dailies.map((dailyTask) {
         return {
           'name': dailyTask.name,
           'done': dailyTask.done,
         };
       }).toList(),
+      'permissions': dailyTaskFirestore.permissions
     });
   }
 
-  Stream<List<DailyTask>> get dailyTaskListStream{
+  Stream<List<DailyTaskFirestore>?> get dailyTaskListStream{
     return unapprovedDaily.snapshots().map(_dailyTaskListFromSnapshot);
   }
 
 
-  List<DailyTask> _dailyTaskListFromSnapshot(QuerySnapshot snapshot) {
+  List<DailyTaskFirestore> _dailyTaskListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
-      return DailyTask(
-        name: doc['name'] ?? '',
-        done:doc['done'] ?? false
-    );}).toList();
+      return DailyTaskFirestore(
+        dailies: doc['dailies'].map<DailyTask>().toList((daily){
+          return DailyTask(
+            name: daily["name"],
+            done: daily["done"]
+          );
+        }) ?? [],
+        permissions:doc['permissions'] ?? [],
+    );
+    }).toList();
   }
 
   }

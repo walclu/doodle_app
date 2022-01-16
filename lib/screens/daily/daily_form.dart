@@ -1,12 +1,15 @@
 import 'package:doodle_app/models/daily_task.dart';
+import 'package:doodle_app/models/dailytaskfirestore.dart';
 import 'package:doodle_app/models/project.dart';
 import 'package:doodle_app/models/todo.dart';
 import 'package:doodle_app/models/user_mod.dart';
+import 'package:doodle_app/screens/daily/widgets/daily_list_widget.dart';
 import 'package:doodle_app/services/data_base.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+
 
 class DailyForm extends StatefulWidget {
 
@@ -25,8 +28,8 @@ class _DailyFormState extends State<DailyForm> {
  Widget build(BuildContext context) {
     
     final user = Provider.of<UserMod>(context);
-    //final projects = Provider.of<List<Pro ject>?>(context) ?? [];
-    final daily = Provider.of<List<DailyTask>>(context) ?? [];
+    final dailyTaskFirestore = Provider.of<List<DailyTaskFirestore>?>(context) ?? [];
+  print(dailyTaskFirestore);
     return Material(
       color: Colors.white,
       child: Form(
@@ -38,6 +41,7 @@ class _DailyFormState extends State<DailyForm> {
               const SizedBox(
                 height: 50,
               ),
+              //DailyList(),
               Align(
                 alignment: Alignment.centerRight,
                 child: IconButton(
@@ -80,14 +84,21 @@ class _DailyFormState extends State<DailyForm> {
                   ),
                   child: GestureDetector(
                     onTap: () async {
-                      if (_formKey.currentState!.validate()) {
-                        List<DailyTask> currentDailys = daily;
-                        print(daily);
-                        currentDailys.add(DailyTask(name: userInput, done: false));
-                        await DataBaseService(uid: user.uid).updateDailyTask(
-                          user.uid,
-                          currentDailys
-                        );
+                      print("whatasdfasdfa");
+                     if (_formKey.currentState!.validate()) {
+                        for (DailyTaskFirestore firestoreObject in dailyTaskFirestore){
+                          print(firestoreObject.permissions[0]);
+                          if(firestoreObject.permissions[0] == user.uid){
+
+                            print("alhsdflhqasd " + user.uid);
+                            List<DailyTask> myDailies = firestoreObject.dailies;
+                            myDailies.add(DailyTask(name: userInput, done: false));
+                            await DataBaseService(uid: user.uid).updateDailyTask(
+                                DailyTaskFirestore(dailies: myDailies, permissions: firestoreObject.permissions)
+                            );
+                          }
+                        }
+
                         Navigator.pop(context);
                       }
                     },

@@ -13,6 +13,9 @@ import 'package:provider/provider.dart';
 
 class DailyForm extends StatefulWidget {
 
+  List<DailyTaskFirestore> dailyTasks;
+
+  DailyForm({required this.dailyTasks});
 
   @override
   _DailyFormState createState() => _DailyFormState();
@@ -26,10 +29,8 @@ class _DailyFormState extends State<DailyForm> {
 
   @override
  Widget build(BuildContext context) {
-    
+    print(widget.dailyTasks);
     final user = Provider.of<UserMod>(context);
-    final dailyTaskFirestore = Provider.of<List<DailyTaskFirestore>?>(context);
-    print(dailyTaskFirestore);
     return Material(
       color: Colors.white,
       child: Form(
@@ -84,10 +85,10 @@ class _DailyFormState extends State<DailyForm> {
                   ),
                   child: GestureDetector(
                     onTap: () async {
-                      print("whatasdfasdfa");
-
+                      /*
                      if (_formKey.currentState!.validate()) {
-                        for (DailyTaskFirestore firestoreObject in dailyTaskFirestore!){
+
+                        for (DailyTaskFirestore firestoreObject in widget.dailyTasks){
                           print(firestoreObject);
                           print(firestoreObject.permissions[0]);
                           if(firestoreObject.permissions[0] == user.uid){
@@ -98,11 +99,13 @@ class _DailyFormState extends State<DailyForm> {
                             await DataBaseService(uid: user.uid).updateDailyTask(
                                 DailyTaskFirestore(dailies: myDailies, permissions: firestoreObject.permissions)
                             );
+
                           }
                         }
 
                         Navigator.pop(context);
                       }
+                     */
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,

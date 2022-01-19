@@ -19,8 +19,6 @@ class _DatabaseProjectsWidgetState extends State<DatabaseProjectsWidget> {
     final user = Provider.of<UserMod>(context);
     final projects = Provider.of<List<Project>?>(context) ?? [];
 
-    final dailyTaskFirestore = Provider.of<List<DailyTaskFirestore>?>(context) ?? [];
-
     return Container(
       height: 110,
       child: ListView.builder(

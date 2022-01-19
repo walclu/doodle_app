@@ -28,8 +28,8 @@ class _DailyFormState extends State<DailyForm> {
  Widget build(BuildContext context) {
     
     final user = Provider.of<UserMod>(context);
-    final dailyTaskFirestore = Provider.of<List<DailyTaskFirestore>?>(context) ?? [];
-  print(dailyTaskFirestore);
+    final dailyTaskFirestore = Provider.of<List<DailyTaskFirestore>?>(context);
+    print(dailyTaskFirestore);
     return Material(
       color: Colors.white,
       child: Form(
@@ -85,8 +85,10 @@ class _DailyFormState extends State<DailyForm> {
                   child: GestureDetector(
                     onTap: () async {
                       print("whatasdfasdfa");
+
                      if (_formKey.currentState!.validate()) {
-                        for (DailyTaskFirestore firestoreObject in dailyTaskFirestore){
+                        for (DailyTaskFirestore firestoreObject in dailyTaskFirestore!){
+                          print(firestoreObject);
                           print(firestoreObject.permissions[0]);
                           if(firestoreObject.permissions[0] == user.uid){
 

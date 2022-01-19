@@ -135,18 +135,19 @@ class DataBaseService {
     return unapprovedDaily.snapshots().map(_dailyTaskListFromSnapshot);
   }
 
-
   List<DailyTaskFirestore> _dailyTaskListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
+      print("Doc-Id: " + doc.id);
+      print(doc["permissions"]);
       return DailyTaskFirestore(
-        dailies: doc['dailies'].map<DailyTask>().toList((daily){
+        permissions: doc['permissions'].cast<String>(),
+        dailies: doc["dailies"].map<DailyTask>((daily) {
           return DailyTask(
-            name: daily["name"],
-            done: daily["done"]
+              name: daily["name"],
+              done: daily["done"],
           );
-        }) ?? [],
-        permissions:doc['permissions'] ?? [],
-    );
+        }).toList(),
+      );
     }).toList();
   }
 

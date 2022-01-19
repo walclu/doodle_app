@@ -3,7 +3,6 @@ import 'package:doodle_app/models/dailytaskfirestore.dart';
 import 'package:doodle_app/models/project.dart';
 import 'package:doodle_app/models/user_mod.dart';
 import 'package:doodle_app/screens/daily/daily_form.dart';
-import 'package:doodle_app/screens/daily/fuck.dart';
 import 'package:doodle_app/screens/home/home_layout.dart';
 import 'package:doodle_app/screens/projectPage/project_form.dart';
 import 'package:doodle_app/services/auth_service.dart';
@@ -58,11 +57,12 @@ class _HomeScreenState extends State<HomeScreen> {
         StreamProvider<List<Project>?>.value(
           value: DataBaseService(uid: user!.uid).projectListStream,
           initialData: [],
-          //catchError: (_, err) => null,
+          catchError: (_, err) => null,
         ),
         StreamProvider<List<DailyTaskFirestore>?>.value(
           value:DataBaseService(uid:user.uid).dailyTaskListStream,
             initialData: [],
+          catchError: (_, err) => null,
         )
       ],
       child: loggedIn
@@ -140,7 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   ActionButton(
                     onPressed: () async {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => Fuck()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => DailyForm()));
                     },
                     icon: const Icon(Icons.checklist_rtl_rounded),
                   ),

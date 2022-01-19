@@ -1,3 +1,4 @@
+import 'package:doodle_app/models/dailytaskfirestore.dart';
 import 'package:doodle_app/screens/home/project_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:doodle_app/shared/constants.dart';
@@ -17,6 +18,9 @@ class _DatabaseProjectsWidgetState extends State<DatabaseProjectsWidget> {
   Widget build(BuildContext context) {
     final user = Provider.of<UserMod>(context);
     final projects = Provider.of<List<Project>?>(context) ?? [];
+
+    final dailyTaskFirestore = Provider.of<List<DailyTaskFirestore>?>(context) ?? [];
+
     return Container(
       height: 110,
       child: ListView.builder(

@@ -3,6 +3,7 @@ import 'package:doodle_app/models/project.dart';
 import 'package:doodle_app/models/user_mod.dart';
 import 'package:doodle_app/screens/daily/daily_form.dart';
 import 'package:doodle_app/screens/home/project_tile.dart';
+import 'package:doodle_app/screens/home/widgets/daily_tasks_progress_list.dart';
 import 'package:doodle_app/screens/home/widgets/daily_tasks_widget.dart';
 import 'package:doodle_app/screens/home/widgets/database_projects_widgets.dart';
 import 'package:doodle_app/screens/home/widgets/heading_welcome_widget.dart';
@@ -106,7 +107,16 @@ class _HomeLayoutState extends State<HomeLayout> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           WelcomeWidget(uid: user.uid),
-
+                          SizedBox(height: 25,),
+                          Text(
+                              "Dailys <3",
+                              style: GoogleFonts.openSans(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.grey[500]
+                              )
+                          ),
+                          DailyTasksProgressList(),
                           SizedBox(height: 25,),
                           Text(
                               "CATEGORIES",

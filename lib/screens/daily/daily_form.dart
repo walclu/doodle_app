@@ -85,28 +85,21 @@ class _DailyFormState extends State<DailyForm> {
                   ),
                   child: GestureDetector(
                     onTap: () async {
-                      /*
+
                      if (_formKey.currentState!.validate()) {
-
                         for (DailyTaskFirestore firestoreObject in widget.dailyTasks){
-                          print(firestoreObject);
-                          print(firestoreObject.permissions[0]);
                           if(firestoreObject.permissions[0] == user.uid){
-
-                            print("alhsdflhqasd " + user.uid);
                             List<DailyTask> myDailies = firestoreObject.dailies;
                             myDailies.add(DailyTask(name: userInput, done: false));
                             await DataBaseService(uid: user.uid).updateDailyTask(
                                 DailyTaskFirestore(dailies: myDailies, permissions: firestoreObject.permissions)
                             );
-
                           }
                         }
-
                         Navigator.pop(context);
                       }
-                     */
                     },
+
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

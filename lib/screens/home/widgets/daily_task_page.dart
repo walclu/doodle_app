@@ -106,7 +106,7 @@ class _DailyTaskPageState extends State<DailyTaskPage> {
                         );
                         setState(() {});
                       } : () async{},
-                      child: Dismissible(
+                      child: owner? Dismissible(
 
                         key: ValueKey(dailyTasks[it]),
                         direction: DismissDirection.endToStart,
@@ -182,6 +182,35 @@ class _DailyTaskPageState extends State<DailyTaskPage> {
                               ),
                             ],
                           ),
+                        ),
+                      ): Container(
+                        margin: const EdgeInsets.only(bottom: 8),
+                        padding: const EdgeInsets.all(8),
+                        decoration: const BoxDecoration(
+                          borderRadius: const BorderRadius.all(Radius.circular(15)),
+                          color: Colors.white,
+                        ),
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Icons.circle_outlined,
+                              color: Colors.blue,
+                            ),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            Text(
+                              dailyTasks[it].name,
+                              style: GoogleFonts.openSans(
+                                decoration: dailyTasks[it].done
+                                    ? TextDecoration.lineThrough
+                                    : null,
+                                fontSize: 13,
+                                letterSpacing: 1.2,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     );

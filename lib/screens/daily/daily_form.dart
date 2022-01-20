@@ -10,9 +10,7 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-
 class DailyForm extends StatefulWidget {
-
   List<DailyTaskFirestore> dailyTasks;
 
   DailyForm({required this.dailyTasks});
@@ -22,14 +20,11 @@ class DailyForm extends StatefulWidget {
 }
 
 class _DailyFormState extends State<DailyForm> {
-
   final _formKey = GlobalKey<FormState>();
   String userInput = "";
 
-
   @override
- Widget build(BuildContext context) {
-    print(widget.dailyTasks);
+  Widget build(BuildContext context) {
     final user = Provider.of<UserMod>(context);
     return Material(
       color: Colors.white,
@@ -85,21 +80,22 @@ class _DailyFormState extends State<DailyForm> {
                   ),
                   child: GestureDetector(
                     onTap: () async {
-
-                     if (_formKey.currentState!.validate()) {
-                        for (DailyTaskFirestore firestoreObject in widget.dailyTasks){
-                          if(firestoreObject.permissions[0] == user.uid){
+                      if (_formKey.currentState!.validate()) {
+                        for (DailyTaskFirestore firestoreObject
+                            in widget.dailyTasks) {
+                          if (firestoreObject.permissions[0] == user.uid) {
                             List<DailyTask> myDailies = firestoreObject.dailies;
-                            myDailies.add(DailyTask(name: userInput, done: false));
-                            await DataBaseService(uid: user.uid).updateDailyTask(
-                                DailyTaskFirestore(dailies: myDailies, permissions: firestoreObject.permissions)
-                            );
+                            myDailies
+                                .add(DailyTask(name: userInput, done: false));
+                            await DataBaseService(uid: user.uid)
+                                .updateDailyTask(DailyTaskFirestore(
+                                    dailies: myDailies,
+                                    permissions: firestoreObject.permissions));
                           }
                         }
                         Navigator.pop(context);
                       }
                     },
-
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -129,4 +125,3 @@ class _DailyFormState extends State<DailyForm> {
     );
   }
 }
-

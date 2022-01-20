@@ -1,6 +1,6 @@
 import 'package:doodle_app/models/dailytaskfirestore.dart';
 import 'package:doodle_app/screens/home/project_tile.dart';
-import 'package:doodle_app/screens/home/widgets/DailyProgressCircle.dart';
+import 'package:doodle_app/screens/home/widgets/daily_progress_circle.dart';
 import 'package:flutter/material.dart';
 import 'package:doodle_app/shared/constants.dart';
 import 'package:provider/provider.dart';
@@ -28,7 +28,7 @@ class _DailyTasksProgressListState extends State<DailyTasksProgressList> {
         scrollDirection: Axis.horizontal,
         itemCount: dailyTaskFirestore.length,
         itemBuilder: (context, it) {
-          return DailyProgressCircle(index: it);
+          return DailyProgressCircle(index: it, dailyTasksFirestore: dailyTaskFirestore);
         },
       ),
     );

@@ -39,7 +39,14 @@ class ProjectTile extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(30)),
-            color: Colors.blueGrey
+            gradient: LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                colors: [
+                  Colors.blueAccent,
+                  Colors.purpleAccent
+                ]
+            ),
           ),
           width: 195,
           child: Container(

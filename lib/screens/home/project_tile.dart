@@ -15,8 +15,6 @@ class ProjectTile extends StatelessWidget {
     int indexUnderscore = name.indexOf('_');
     return name.substring(0,indexUnderscore);
   }
-
-
   @override
   Widget build(BuildContext context) {
     final projects = Provider.of<List<Project>?>(context) ?? [];
@@ -37,7 +35,7 @@ class ProjectTile extends StatelessWidget {
           Navigator.push(context, MaterialPageRoute(builder: (context) => ProjectPage(index: index)));
         },
         child: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(30)),
             gradient: LinearGradient(
                 begin: Alignment.centerLeft,
@@ -50,13 +48,13 @@ class ProjectTile extends StatelessWidget {
           ),
           width: 195,
           child: Container(
-            padding: EdgeInsets.only(left: 10, top: 20, bottom: 1, right: 18),
+            padding: const EdgeInsets.only(left: 10, top: 20, bottom: 1, right: 18),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 project.todos.length == 1 ?
                 Container(
-                  padding: EdgeInsets.only(left: 8),
+                  padding: const EdgeInsets.only(left: 8),
                   child: Text("${project.todos.length} task",
                   style: GoogleFonts.openSans(
                       fontSize: 12,
@@ -66,7 +64,7 @@ class ProjectTile extends StatelessWidget {
                   ),
                 ) :
                 Container(
-                  padding: EdgeInsets.only(left: 8),
+                  padding: const EdgeInsets.only(left: 8),
                   child: Text("${project.todos.length} tasks",
                     style: GoogleFonts.openSans(
                         fontSize: 12,
@@ -75,9 +73,9 @@ class ProjectTile extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 5,),
+                const SizedBox(height: 5,),
                 Container(
-                  padding: EdgeInsets.only(left: 8),
+                  padding: const EdgeInsets.only(left: 8),
                   child: Text(_getProjectName(project.name),
                     style: GoogleFonts.openSans(
                       fontWeight: FontWeight.bold,
@@ -86,7 +84,7 @@ class ProjectTile extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 16,),
+                const SizedBox(height: 16,),
                 LinearPercentIndicator(
                   backgroundColor: Colors.white,
                   width: 167,

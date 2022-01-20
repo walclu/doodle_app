@@ -1,4 +1,4 @@
- import 'package:doodle_app/models/dailytaskfirestore.dart';
+ import 'package:doodle_app/models/daily_task_firestore.dart';
 import 'package:doodle_app/models/user_mod.dart';
 import 'package:doodle_app/services/data_base.dart';
 import 'package:firebase_auth/firebase_auth.dart';

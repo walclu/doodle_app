@@ -1,4 +1,4 @@
-import 'package:doodle_app/models/dailytaskfirestore.dart';
+import 'package:doodle_app/models/daily_task_firestore.dart';
 import 'package:doodle_app/screens/home/project_tile.dart';
 import 'package:doodle_app/screens/home/widgets/daily_progress_circle.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +19,6 @@ class DailyTasksProgressList extends StatefulWidget {
 class _DailyTasksProgressListState extends State<DailyTasksProgressList> {
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<UserMod>(context);
     final dailyTaskFirestore = Provider.of<List<DailyTaskFirestore>?>(context) ?? [];
 
     return Container(
@@ -28,7 +27,7 @@ class _DailyTasksProgressListState extends State<DailyTasksProgressList> {
         scrollDirection: Axis.horizontal,
         itemCount: dailyTaskFirestore.length,
         itemBuilder: (context, it) {
-          return DailyProgressCircle(index: it, dailyTasksFirestore: dailyTaskFirestore);
+          return DailyProgressCircle(index: it);
         },
       ),
     );

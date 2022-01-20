@@ -1,19 +1,15 @@
 import 'package:doodle_app/models/daily_task.dart';
-import 'package:doodle_app/models/dailytaskfirestore.dart';
-import 'package:doodle_app/models/project.dart';
-import 'package:doodle_app/models/todo.dart';
+import 'package:doodle_app/models/daily_task_firestore.dart';
 import 'package:doodle_app/models/user_mod.dart';
-import 'package:doodle_app/screens/daily/widgets/daily_list_widget.dart';
 import 'package:doodle_app/services/data_base.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class DailyForm extends StatefulWidget {
-  List<DailyTaskFirestore> dailyTasks;
+  DailyTaskFirestore firebaseDoc;
 
-  DailyForm({required this.dailyTasks});
+  DailyForm({required this.firebaseDoc});
 
   @override
   _DailyFormState createState() => _DailyFormState();
@@ -37,7 +33,6 @@ class _DailyFormState extends State<DailyForm> {
               const SizedBox(
                 height: 50,
               ),
-              //DailyList(),
               Align(
                 alignment: Alignment.centerRight,
                 child: IconButton(
@@ -56,7 +51,6 @@ class _DailyFormState extends State<DailyForm> {
               ),
               TextFormField(
                 initialValue: "",
-                //decoration: textInputDecoration,
                 decoration: const InputDecoration.collapsed(
                     hintText: "Enter daily task"),
                 validator: (val) => val!.isEmpty ? 'Please enter a text' : null,
@@ -81,20 +75,18 @@ class _DailyFormState extends State<DailyForm> {
                   child: GestureDetector(
                     onTap: () async {
                       if (_formKey.currentState!.validate()) {
-                        for (DailyTaskFirestore firestoreObject
-                            in widget.dailyTasks) {
-                          if (firestoreObject.permissions[0] == user.uid) {
-                            List<DailyTask> myDailies = firestoreObject.dailies;
+
+                            List<DailyTask> myDailies = widget.firebaseDoc.dailies;
                             myDailies
                                 .add(DailyTask(name: userInput, done: false));
                             await DataBaseService(uid: user.uid)
                                 .updateDailyTask(DailyTaskFirestore(
                                     dailies: myDailies,
-                                    permissions: firestoreObject.permissions));
-                          }
+                                    permissions: widget.firebaseDoc.permissions));
+
                         }
                         Navigator.pop(context);
-                      }
+
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,

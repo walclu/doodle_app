@@ -1,4 +1,4 @@
-import 'package:doodle_app/models/dailytaskfirestore.dart';
+import 'package:doodle_app/models/daily_task_firestore.dart';
 import 'package:doodle_app/screens/home/project_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:doodle_app/shared/constants.dart';

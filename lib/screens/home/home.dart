@@ -1,5 +1,5 @@
 import 'package:doodle_app/models/daily_task.dart';
-import 'package:doodle_app/models/dailytaskfirestore.dart';
+import 'package:doodle_app/models/daily_task_firestore.dart';
 import 'package:doodle_app/models/project.dart';
 import 'package:doodle_app/models/user_mod.dart';
 import 'package:doodle_app/screens/daily/daily_form.dart';

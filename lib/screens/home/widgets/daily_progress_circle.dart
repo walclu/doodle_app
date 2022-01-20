@@ -1,7 +1,9 @@
-import 'package:doodle_app/models/dailytaskfirestore.dart';
+import 'package:doodle_app/models/daily_task_firestore.dart';
+import 'package:doodle_app/models/user_mod.dart';
 import 'package:doodle_app/screens/projectPage/project_page.dart';
 import 'package:flutter/material.dart';
 import 'package:doodle_app/models/project.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
@@ -9,19 +11,16 @@ import 'package:provider/provider.dart';
 import 'daily_task_page.dart';
 
 class DailyProgressCircle extends StatelessWidget {
-  //const ProjectTile({Key? key}) : super(key: key);
-
   final int index;
-  final dailyTasksFirestore;
 
-  DailyProgressCircle({required this.index, required this.dailyTasksFirestore});
-
+  DailyProgressCircle({required this.index});
 
   @override
   Widget build(BuildContext context) {
-    String cardName = "";
-    index == 0 ? cardName = "Your Daily Tasks" : cardName = "XY Tasks";
+
     final dailyTaskFirestore = Provider.of<List<DailyTaskFirestore>?>(context) ?? [];
+
+    String cardName = dailyTaskFirestore[index].permissions[0];
     final dailyTask = dailyTaskFirestore[index];
     double todosProgress = 0;
     int numTodos = dailyTask.dailies.length;
@@ -36,10 +35,11 @@ class DailyProgressCircle extends StatelessWidget {
       padding: const EdgeInsets.only(right: 20),
       child: GestureDetector(
         onTap: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context) => DailyTaskPage(dailyTasksFirestore: dailyTasksFirestore)));
+          //print(index);
+          Navigator.push(context, MaterialPageRoute(builder: (context) => DailyTaskPage(firebaseDoc: dailyTaskFirestore[index])));
         },
         child: Container(
-          padding: EdgeInsets.only(left: 15, top: 15, bottom: 2, right: 18),
+          padding: const EdgeInsets.only(left: 15, top: 15, bottom: 2, right: 18),
           decoration: const BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(30)),
               gradient: LinearGradient(
@@ -62,7 +62,7 @@ class DailyProgressCircle extends StatelessWidget {
                   color: Colors.white,
                 ),
               ),
-              SizedBox(height: 10,),
+              const SizedBox(height: 10,),
               CircularPercentIndicator(
                 backgroundColor: Colors.white,
                 animation: true,

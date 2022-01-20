@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doodle_app/models/daily_task.dart';
-import 'package:doodle_app/models/dailytaskfirestore.dart';
+import 'package:doodle_app/models/daily_task_firestore.dart';
 import 'package:doodle_app/models/project.dart';
 import 'package:doodle_app/models/todo.dart';
 
@@ -136,7 +136,7 @@ class DataBaseService {
   }
 
   List<DailyTaskFirestore> _dailyTaskListFromSnapshot(QuerySnapshot snapshot) {
-    return snapshot.docs.map((doc) {
+    dynamic unsorted = snapshot.docs.map((doc) {
       return DailyTaskFirestore(
         permissions: doc['permissions'].cast<String>(),
         dailies: doc["dailies"].map<DailyTask>((daily) {
@@ -147,6 +147,19 @@ class DataBaseService {
         }).toList(),
       );
     }).toList();
+
+    for( DailyTaskFirestore firebaseDoc in unsorted){
+      if (firebaseDoc.permissions[0] == uid)
+      {
+        unsorted.remove(firebaseDoc);
+        unsorted.insert(0, firebaseDoc);
+      }
+    }
+    for (DailyTaskFirestore firebaseDoc in unsorted){
+      print(firebaseDoc.permissions);
+    }
+
+    return unsorted;
   }
 
   }

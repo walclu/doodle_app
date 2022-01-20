@@ -1,10 +1,7 @@
 import 'package:doodle_app/models/daily_task.dart';
-import 'package:doodle_app/models/project.dart';
-import 'package:doodle_app/models/todo.dart';
+import 'package:doodle_app/models/daily_task_firestore.dart';
 import 'package:doodle_app/models/user_mod.dart';
 import 'package:doodle_app/screens/daily/daily_form.dart';
-import 'package:doodle_app/screens/projectPage/widgets/todo_overview_widget.dart';
-import 'package:doodle_app/screens/projectPage/widgets/settings_form.dart';
 import 'package:doodle_app/services/data_base.dart';
 import 'package:doodle_app/shared/constants.dart';
 import 'package:flutter/material.dart';
@@ -12,9 +9,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class DailyTaskPage extends StatefulWidget {
-  final dailyTasksFirestore;
+  final DailyTaskFirestore firebaseDoc;
 
-  DailyTaskPage({required this.dailyTasksFirestore});
+  DailyTaskPage({required this.firebaseDoc});
 
   @override
   _DailyTaskPageState createState() => _DailyTaskPageState();
@@ -28,17 +25,18 @@ class _DailyTaskPageState extends State<DailyTaskPage> {
   Widget build(BuildContext context) {
     final user = Provider.of<UserMod?>(context);
     DataBaseService service = DataBaseService(uid: user!.uid);
-    //TODO Immoment wird immer nur die erste Liste an daily tasks gelesen -> Index erforderlich, damit man weiß welche Liste in der DailyTaskPage gezeigt werden soll
-    List<DailyTask> dailyTasks = widget.dailyTasksFirestore[0].dailies;
+
+    List<DailyTask> dailyTasks = widget.firebaseDoc.dailies;
+    bool owner = user.uid==widget.firebaseDoc.permissions[0];
     return Material(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: Column(
           children: [
-            SizedBox(height: 60),
+            const SizedBox(height: 60),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Row(
+              child: owner ? Row(
                 children: [
                   Expanded(
                     child: Form(
@@ -58,7 +56,7 @@ class _DailyTaskPageState extends State<DailyTaskPage> {
                     ),
                   ),
                   IconButton(
-                    onPressed: () async {
+                    onPressed: owner? () async {
                       if (_formKey.currentState!.validate()) {
                         dynamic result =
                             await service.uidCollection.doc(search).get();
@@ -68,11 +66,11 @@ class _DailyTaskPageState extends State<DailyTaskPage> {
                           print('Search failed');
                         }
                       }
-                    },
-                    icon: Icon(Icons.search),
+                    } : () async{},
+                    icon: const Icon(Icons.search),
                   ),
                 ],
-              ),
+              ) : SizedBox(height: 50,),
             ),
 
             Container(
@@ -81,32 +79,41 @@ class _DailyTaskPageState extends State<DailyTaskPage> {
                 context: context,
                 removeTop: true,
                 child: ReorderableListView.builder(
-                  onReorder: (oldIndex, newIndex) async {
-                    //TODO Implement reordering on device and on database
-                    setState(() {});
+                  onReorder: owner ? (oldIndex, newIndex) async {
+                    setState(() {
+                      final index = newIndex > oldIndex ? newIndex - 1 : newIndex;
+                      final task = dailyTasks.removeAt(oldIndex);
+                      dailyTasks.insert(index, task);
+                    });
+                    widget.firebaseDoc.dailies = dailyTasks;
+                    await DataBaseService(uid: user.uid).updateDailyTask(
+                        widget.firebaseDoc
+                    );
+                  } : (oldIndex, newIndex){
+
                   },
                   itemCount: dailyTasks.length,
                   itemBuilder: (context, it) {
                     return GestureDetector(
                       key: ValueKey(dailyTasks[it]),
                       onDoubleTap: () async {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    DailyForm(dailyTasks: widget.dailyTasksFirestore)));
                       },
-                      onTap: () async {
-                        //TODO Toogle "done" on pressed daily task
+                      onTap: owner? () async {
+                        dailyTasks[it].done = !dailyTasks[it].done;
+                        widget.firebaseDoc.dailies = dailyTasks;
+                        await DataBaseService(uid: user.uid).updateDailyTask(
+                            widget.firebaseDoc
+                        );
                         setState(() {});
-                      },
+                      } : () async{},
                       child: Dismissible(
+
                         key: ValueKey(dailyTasks[it]),
                         direction: DismissDirection.endToStart,
                         background: Container(
-                          margin: EdgeInsets.only(bottom: 8),
-                          padding: EdgeInsets.all(8),
-                          decoration: BoxDecoration(
+                          margin: const EdgeInsets.only(bottom: 8),
+                          padding: const EdgeInsets.all(8),
+                          decoration: const BoxDecoration(
                             borderRadius: BorderRadius.all(Radius.circular(15)),
                             color: Colors.redAccent,
                           ),
@@ -123,14 +130,23 @@ class _DailyTaskPageState extends State<DailyTaskPage> {
                           ),
                         ),
                         onDismissed: (direction) async {
-                          //TODO delete dismissed object from database, but keep a copy of it for the snack bar, so user can bring it back
+                         DailyTask safe = dailyTasks.removeAt(it);
+                         widget.firebaseDoc.dailies = dailyTasks;
+                         await service.updateDailyTask(
+                           widget.firebaseDoc
+                         );
+
                           setState(() {});
                           final snackBar = SnackBar(
                             content: const Text('Task deleted'),
                             action: SnackBarAction(
                               label: 'Undo',
                               onPressed: () async {
-                                //TODO take safed object and write it back to database
+                                dailyTasks.insert(it, safe);
+                                widget.firebaseDoc.dailies = dailyTasks;
+                                await service.updateDailyTask(
+                                  widget.firebaseDoc
+                                );
                                 setState(() {});
                               },
                             ),
@@ -138,19 +154,19 @@ class _DailyTaskPageState extends State<DailyTaskPage> {
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         },
                         child: Container(
-                          margin: EdgeInsets.only(bottom: 8),
-                          padding: EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(15)),
+                          margin: const EdgeInsets.only(bottom: 8),
+                          padding: const EdgeInsets.all(8),
+                          decoration: const BoxDecoration(
+                            borderRadius: const BorderRadius.all(Radius.circular(15)),
                             color: Colors.white,
                           ),
                           child: Row(
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.circle_outlined,
                                 color: Colors.blue,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 20,
                               ),
                               Text(
@@ -176,14 +192,18 @@ class _DailyTaskPageState extends State<DailyTaskPage> {
           ],
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        floatingActionButton: FloatingActionButton(
+          floatingActionButton: owner?  FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return DailyForm(dailyTasks: widget.dailyTasksFirestore);
-            }));
-          },
-        ),
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) =>
+                    DailyForm(firebaseDoc: widget.firebaseDoc))
+            );
+            setState(() {
+
+            });
+            },
+        ) : null,
       ),
     );
   }

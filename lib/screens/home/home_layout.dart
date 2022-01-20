@@ -1,4 +1,4 @@
-import 'package:doodle_app/models/dailytaskfirestore.dart';
+import 'package:doodle_app/models/daily_task_firestore.dart';
 import 'package:doodle_app/models/project.dart';
 import 'package:doodle_app/models/user_mod.dart';
 import 'package:doodle_app/screens/daily/daily_form.dart';
@@ -36,8 +36,8 @@ class _HomeLayoutState extends State<HomeLayout> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserMod>(context);
-    final dailyTaskFirestore =
-        Provider.of<List<DailyTaskFirestore>?>(context) ?? [];
+    final dailyTaskFirestore = Provider.of<List<DailyTaskFirestore>?>(context) ?? [];
+
     final AuthService _auth = AuthService();
     return loggedIn
         ? MaterialApp(
@@ -103,13 +103,13 @@ class _HomeLayoutState extends State<HomeLayout> {
                       ),
                       Container(
                         height: MediaQuery.of(context).size.height*0.86,
-                        padding: EdgeInsets.all(25.0),
+                        padding: const EdgeInsets.all(25.0),
                         child: SingleChildScrollView(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               WelcomeWidget(uid: user.uid),
-                              SizedBox(
+                              const SizedBox(
                                 height: 25,
                               ),
                               Text("DAILYS",
@@ -117,11 +117,11 @@ class _HomeLayoutState extends State<HomeLayout> {
                                       fontSize: 12,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.grey[500])),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               DailyTasksProgressList(),
-                              SizedBox(
+                              const SizedBox(
                                 height: 25,
                               ),
                               Text("PROJECTS",
@@ -129,9 +129,9 @@ class _HomeLayoutState extends State<HomeLayout> {
                                       fontSize: 12,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.grey[500])),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               DatabaseProjectsWidget(),
-                              SizedBox(
+                              const SizedBox(
                                 height: 30,
                               ),
                               Text("TODAY'S PROJECT TASKS",
@@ -139,7 +139,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                                       fontSize: 12,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.grey[500])),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               DailyTasksWidget(),
@@ -164,7 +164,8 @@ class _HomeLayoutState extends State<HomeLayout> {
                       onPressed: () async {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) =>
-                                DailyTaskPage(dailyTasksFirestore: dailyTaskFirestore)));
+                                DailyTaskPage(firebaseDoc: dailyTaskFirestore[0]))
+                        );
                       },
                       icon: const Icon(Icons.checklist_rtl_rounded),
                     ),

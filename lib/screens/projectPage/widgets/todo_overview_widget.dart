@@ -70,9 +70,9 @@ class _TodoOverViewState extends State<TodoOverView> {
                 key: ValueKey(todos[it]),
                 direction: DismissDirection.endToStart,
                 background: Container(
-                  margin: EdgeInsets.only(bottom: 8),
-                  padding: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
+                  margin: const EdgeInsets.only(bottom: 8),
+                  padding: const EdgeInsets.all(8),
+                  decoration: const BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(15)),
                     color: Colors.redAccent,
                   ),

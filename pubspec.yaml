@@ -44,6 +44,7 @@ dependencies:
   flutter_colorpicker: ^1.0.3
   flutter_slidable: ^1.1.0
   font_awesome_flutter:
+  pull_to_refresh: ^2.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

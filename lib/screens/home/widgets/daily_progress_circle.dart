@@ -36,7 +36,7 @@ class DailyProgressCircle extends StatelessWidget {
       child: GestureDetector(
         onTap: (){
           //print(index);
-          Navigator.push(context, MaterialPageRoute(builder: (context) => DailyTaskPage(firebaseDoc: dailyTaskFirestore[index])));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => DailyTaskPage(index: index)));
         },
         child: Container(
           padding: const EdgeInsets.only(left: 15, top: 15, bottom: 2, right: 18),

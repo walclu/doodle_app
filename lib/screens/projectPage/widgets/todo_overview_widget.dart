@@ -17,8 +17,17 @@ class TodoOverView extends StatefulWidget {
   _TodoOverViewState createState() => _TodoOverViewState();
 }
 
-class _TodoOverViewState extends State<TodoOverView> {
+class _TodoOverViewState extends State<TodoOverView> with SingleTickerProviderStateMixin{
+  late AnimationController _animationController;
 
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      vsync: this, // the SingleTickerProviderStateMixin
+      duration: Duration(milliseconds: 400),
+    );
+  }
   @override
   Widget build(BuildContext context) {
     final projects = Provider.of<List<Project>?>(context) ?? [];
@@ -54,6 +63,12 @@ class _TodoOverViewState extends State<TodoOverView> {
               },
               onTap: () async {
                 todos[it].state = !todos[it].state;
+                if(todos[it].state){
+                  _animationController.forward();
+                }
+                else{
+                  _animationController.reverse();
+                }
                 await DataBaseService(uid: user!.uid).updateProject(
                     project.name,
                     project.done,
@@ -132,16 +147,13 @@ class _TodoOverViewState extends State<TodoOverView> {
                   ),
                   child: Row(
                     children: [
-                      Icon(Icons.circle_outlined,
-                        color: Color(project.color),
-                      ),
+                      AnimatedIcon(icon: AnimatedIcons.ellipsis_search, progress: _animationController),
                       SizedBox(width: 20,),
                       Text(project.todos[it].name,
                         style: GoogleFonts.openSans(
-                          decoration: project.todos[it].state? TextDecoration.lineThrough : null,
-                          fontSize: 13,
-                          letterSpacing: 1.2,
-                          fontWeight: FontWeight.w400,
+                          fontSize: 14,
+                          letterSpacing: 1,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ],
@@ -153,95 +165,5 @@ class _TodoOverViewState extends State<TodoOverView> {
         ),
       ),
     );
-
-
-
-    /*Container(
-      height: MediaQuery
-          .of(context)
-          .size
-          .height * 0.72,
-      child: ReorderableListView.builder(
-        onReorder: (oldIndex, newIndex) async {
-          setState(() {
-            final index = newIndex > oldIndex ? newIndex - 1 : newIndex;
-            final todo = todos.removeAt(oldIndex);
-            todos.insert(index, todo);
-          });
-          await DataBaseService(uid: user!.uid).updateProject(
-              project.name,
-              project.done,
-              todos,
-              project.userPermissions,
-              project.color
-          );
-        },
-        itemCount: todos.length,
-        itemBuilder: (context, it) {
-          final todo = todos[it];
-          return Dismissible(
-            key: ValueKey(todo),
-            onDismissed: (direction) async {
-                todos.removeAt(it);
-                await DataBaseService(uid: user!.uid).updateProject(
-                    project.name,
-                    project.done,
-                    todos,
-                    project.userPermissions,
-                    project.color
-                );
-            },
-            child: Container(
-
-              child: ListTile(
-                key: ValueKey(todo),
-                contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                title: todo.state? Text(todo.name,
-                  style: GoogleFonts.openSans(
-                    decoration: TextDecoration.lineThrough,
-                    color: Colors.grey,
-                  ),
-                ) : Text(todo.name,
-                  style: GoogleFonts.openSans(
-                    color: Colors.black,
-                  ),
-                ),
-                leading: IconButton(
-                  onPressed: () async {
-                    todos[it].state = !todos[it].state;
-                    await DataBaseService(uid: user!.uid).updateProject(
-                        project.name,
-                        project.done,
-                        todos,
-                        project.userPermissions,
-                        project.color
-                    );
-                    setState(() {
-
-                    });
-                  },
-                  icon: todo.state? Icon(Icons.check_box_outlined,
-                    color: Colors.black,
-                  ): Icon(Icons.check_box_outline_blank_rounded,
-                    color: Colors.black,
-                  ),
-                ),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                      icon: Icon(Icons.edit, color: Colors.black),
-                      onPressed: () async {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => TodoForm(project: project, index: it)));
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
-        },
-      ),
-    );*/
   }
 }

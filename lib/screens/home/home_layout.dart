@@ -164,7 +164,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                       onPressed: () async {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) =>
-                                DailyTaskPage(firebaseDoc: dailyTaskFirestore[0]))
+                                DailyTaskPage(index: 0))
                         );
                       },
                       icon: const Icon(Icons.checklist_rtl_rounded),

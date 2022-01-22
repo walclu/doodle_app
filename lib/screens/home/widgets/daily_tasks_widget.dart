@@ -157,9 +157,8 @@ class _DailyTasksWidgetState extends State<DailyTasksWidget> {
                       Text(dailyTasks[index]['todo']!.name,
                         style: GoogleFonts.openSans(
                           decoration: dailyTasks[index]['todo'].state? TextDecoration.lineThrough : null,
-                          fontSize: 13,
-                          letterSpacing: 1.2,
-                          fontWeight: FontWeight.w400,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ],

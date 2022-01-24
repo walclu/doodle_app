@@ -1,8 +1,7 @@
 import 'package:doodle_app/models/project.dart';
-import 'package:doodle_app/models/todo.dart';
 import 'package:doodle_app/models/user_mod.dart';
-import 'package:doodle_app/screens/projectPage/widgets/todo_overview_widget.dart';
-import 'package:doodle_app/screens/projectPage/widgets/settings_form.dart';
+import 'package:doodle_app/widgets/todo/todo_list.dart';
+import 'package:doodle_app/widgets/projectPage/widgets/settings_form.dart';
 import 'package:doodle_app/services/data_base.dart';
 import 'package:doodle_app/shared/constants.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +23,6 @@ class _ProjectPageState extends State<ProjectPage> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserMod?>(context);
-    final projects = Provider.of<List<Project>?>(context) ?? [];
     void _showSettingsPanel() {
       showModalBottomSheet(
           context: context,
@@ -33,7 +31,7 @@ class _ProjectPageState extends State<ProjectPage> {
               padding: EdgeInsets.symmetric(vertical: 20, horizontal: 60),
               color: Colors.white,
               child: SettingsForm(
-                projectCopy: projects[widget.index],
+                projectIndex: widget.index,
               ),
             );
           });
@@ -41,14 +39,16 @@ class _ProjectPageState extends State<ProjectPage> {
 
     DataBaseService service = DataBaseService(uid: user!.uid);
     return Material(
+      color: Colors.grey,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
+        backgroundColor: Color.fromRGBO(249, 250, 255,1),
         body: Column(
           children: [
-            SizedBox(height: 60),
+            const SizedBox(height: 60),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Row(
+              child: Row( // Freund suchen
                 children: [
                   Expanded(
                     child: Form(
@@ -73,6 +73,8 @@ class _ProjectPageState extends State<ProjectPage> {
                         dynamic result =
                             await service.uidCollection.doc(search).get();
                         try {
+                          final projects = Provider.of<List<Project>?>(context) ?? [];
+
                           await service.addUserToProject(
                               result['uid'], projects[widget.index]);
                         } catch (e) {
@@ -80,21 +82,22 @@ class _ProjectPageState extends State<ProjectPage> {
                         }
                       }
                     },
-                    icon: Icon(Icons.search),
+                    icon: const Icon(Icons.search),
                   ),
                 ],
               ),
             ),
             //
-            TodoOverView(index: widget.index),
+            TodoList(index: widget.index),
           ],
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
+          child: const Icon(Icons.add),
           onPressed: () {
+            final projects = Provider.of<List<Project>?>(context) ?? [];
             Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return SettingsForm(projectCopy: projects[widget.index]);
+              return SettingsForm(projectIndex: widget.index);
             }));
           },
         ),

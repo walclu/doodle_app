@@ -1,9 +1,5 @@
 import 'package:doodle_app/models/daily_task_firestore.dart';
-import 'package:doodle_app/models/user_mod.dart';
-import 'package:doodle_app/screens/projectPage/project_page.dart';
 import 'package:flutter/material.dart';
-import 'package:doodle_app/models/project.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';

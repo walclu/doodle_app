@@ -1,17 +1,13 @@
 import 'package:doodle_app/models/daily_task_firestore.dart';
-import 'package:doodle_app/models/project.dart';
 import 'package:doodle_app/models/user_mod.dart';
-import 'package:doodle_app/screens/daily/daily_form.dart';
-import 'package:doodle_app/screens/home/project_tile.dart';
-import 'package:doodle_app/screens/home/widgets/daily_task_page.dart';
-import 'package:doodle_app/screens/home/widgets/daily_tasks_progress_list.dart';
-import 'package:doodle_app/screens/home/widgets/daily_tasks_widget.dart';
-import 'package:doodle_app/screens/home/widgets/database_projects_widgets.dart';
-import 'package:doodle_app/screens/home/widgets/heading_welcome_widget.dart';
-import 'package:doodle_app/screens/home/widgets/test.dart';
-import 'package:doodle_app/screens/projectPage/project_form.dart';
+import 'package:doodle_app/widgets/home/widgets/daily_task_page.dart';
+import 'package:doodle_app/widgets/home/widgets/daily_tasks_progress_list.dart';
+import 'package:doodle_app/widgets/home/widgets/today_tasks_widget.dart';
+import 'package:doodle_app/widgets/home/widgets/database_projects_widgets.dart';
+import 'package:doodle_app/widgets/home/widgets/heading_welcome_widget.dart';
+import 'package:doodle_app/widgets/home/widgets/test.dart';
+import 'package:doodle_app/widgets/projectPage/widgets/project_form.dart';
 import 'package:doodle_app/services/auth_service.dart';
-import 'package:doodle_app/shared/constants.dart';
 import 'package:doodle_app/shared/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -54,15 +50,15 @@ class _HomeLayoutState extends State<HomeLayout> {
             transform: Matrix4.translationValues(xOffset, yOffset, 0)
               ..scale(scaleFactor)
               ..rotateY(isDrawerOpen ? -0.5 : 0),
-            duration: Duration(milliseconds: 200),
+            duration: const Duration(milliseconds: 200),
             child: Material(
               child: Scaffold(
-                backgroundColor: Color.fromRGBO(14, 31, 84, 0.03),
+                backgroundColor: const Color.fromRGBO(14, 31, 84, 0.03),
                 resizeToAvoidBottomInset: false,
                 body: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: 50),
+                      const SizedBox(height: 50),
                       Padding(
                         padding: const EdgeInsets.all(4.0),
                         child: Row(
@@ -70,7 +66,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                           children: [
                             isDrawerOpen
                                 ? IconButton(
-                                    icon: Icon(Icons.arrow_back_ios),
+                                    icon: const Icon(Icons.arrow_back_ios),
                                     onPressed: () {
                                       setState(() {
                                         xOffset = 0;
@@ -91,7 +87,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                                       });
                                     }),
                             IconButton(
-                                icon: Icon(Icons.logout),
+                                icon: const Icon(Icons.logout),
                                 onPressed: () async {
                                   setState(() {
                                     loggedIn = false;
@@ -120,7 +116,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                               const SizedBox(
                                 height: 10,
                               ),
-                              DailyTasksProgressList(),
+                              const DailyTasksProgressList(),
                               const SizedBox(
                                 height: 25,
                               ),
@@ -130,7 +126,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                                       fontWeight: FontWeight.bold,
                                       color: Colors.grey[500])),
                               const SizedBox(height: 10),
-                              DatabaseProjectsWidget(),
+                              const ProjectsListWidget(),
                               const SizedBox(
                                 height: 30,
                               ),
@@ -142,7 +138,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                               const SizedBox(
                                 height: 10,
                               ),
-                              DailyTasksWidget(),
+                              const TodayTasksList(),
                             ],
                           ),
                         ),
@@ -174,6 +170,6 @@ class _HomeLayoutState extends State<HomeLayout> {
               ),
             ),
           ))
-        : Loading();
+        : new Loading();
   }
 }

@@ -1,23 +1,20 @@
 import 'package:doodle_app/models/todo.dart';
-import 'package:doodle_app/screens/projectPage/widgets/todo_form.dart';
+import 'package:doodle_app/widgets/todo/todo_form.dart';
 import 'package:doodle_app/services/data_base.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:doodle_app/shared/constants.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:doodle_app/models/project.dart';
 import 'package:doodle_app/models/user_mod.dart';
 
-class DailyTasksWidget extends StatefulWidget {
-  const DailyTasksWidget({Key? key}) : super(key: key);
+class TodayTasksList extends StatefulWidget {
+  const TodayTasksList({Key? key}) : super(key: key);
 
   @override
-  _DailyTasksWidgetState createState() => _DailyTasksWidgetState();
+  _TodayTasksListState createState() => _TodayTasksListState();
 }
 
-class _DailyTasksWidgetState extends State<DailyTasksWidget> {
+class _TodayTasksListState extends State<TodayTasksList> {
   bool isToday(DateTime date) {
     final now = DateTime.now();
     final diff = now.difference(date).inDays;
@@ -84,9 +81,9 @@ class _DailyTasksWidgetState extends State<DailyTasksWidget> {
                 direction: DismissDirection.endToStart,
                 key: ValueKey(dailyTasks[index]['todo']),
                 background: Container(
-                  margin: EdgeInsets.only(bottom: 8),
-                  padding: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
+                  margin: const EdgeInsets.only(bottom: 8),
+                  padding: const EdgeInsets.all(8),
+                  decoration: const BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(15)),
                     color: Colors.redAccent,
                   ),
@@ -142,9 +139,9 @@ class _DailyTasksWidgetState extends State<DailyTasksWidget> {
 
                 },
                 child: Container(
-                  margin: EdgeInsets.only(bottom: 8),
-                  padding: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
+                  margin: const EdgeInsets.only(bottom: 8),
+                  padding: const EdgeInsets.all(8),
+                  decoration: const BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(15)),
                     color: Colors.white,
                   ),
@@ -153,7 +150,7 @@ class _DailyTasksWidgetState extends State<DailyTasksWidget> {
                       Icon(Icons.circle_outlined,
                         color: Color(projects[projNum].color),
                       ),
-                      SizedBox(width: 20,),
+                      const SizedBox(width: 20,),
                       Text(dailyTasks[index]['todo']!.name,
                         style: GoogleFonts.openSans(
                           decoration: dailyTasks[index]['todo'].state? TextDecoration.lineThrough : null,

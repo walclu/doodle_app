@@ -10,8 +10,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class SettingsForm extends StatefulWidget {
-  Project projectCopy;
-  SettingsForm({required this.projectCopy});
+  final int projectIndex;
+  SettingsForm({required this.projectIndex});
 
   @override
   _SettingsFormState createState() => _SettingsFormState();
@@ -21,6 +21,7 @@ class _SettingsFormState extends State<SettingsForm> {
   final _formKey = GlobalKey<FormState>();
   String userInput = "";
   TimeOfDay _time = TimeOfDay(hour: 7, minute: 15);
+
 
   // void _selectTime() async {
   //   final TimeOfDay? newTime = await showTimePicker(
@@ -51,10 +52,12 @@ class _SettingsFormState extends State<SettingsForm> {
 
   @override
   Widget build(BuildContext context) {
-    String name = widget.projectCopy.name;
-    bool done = widget.projectCopy.done;
-    List<Todo> todos = widget.projectCopy.todos;
-    int color = widget.projectCopy.color;
+    final projects = Provider.of<List<Project>?>(context) ?? [];
+    Project project = projects[widget.projectIndex];
+    String name = project.name;
+    bool done = project.done;
+    List<Todo> todos = project.todos;
+    int color = project.color;
     final user = Provider.of<UserMod>(context);
     //final projects = Provider.of<List<Project>?>(context) ?? [];
 
@@ -185,10 +188,10 @@ class _SettingsFormState extends State<SettingsForm> {
                             members: []);
                         todos.add(validTodo);
                         await DataBaseService(uid: user.uid).updateProject(
-                            widget.projectCopy.name,
+                            project.name,
                             done,
                             todos,
-                            widget.projectCopy.userPermissions,
+                            project.userPermissions,
                             color
                         );
                       }

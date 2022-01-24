@@ -1,15 +1,15 @@
-import 'package:doodle_app/screens/projectPage/project_page.dart';
+import 'package:doodle_app/widgets/projectPage/project_page.dart';
 import 'package:flutter/material.dart';
 import 'package:doodle_app/models/project.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
 
-class ProjectTile extends StatelessWidget {
-  //const ProjectTile({Key? key}) : super(key: key);
+class ProjectCard extends StatelessWidget {
+  //const ProjectCard({Key? key}) : super(key: key);
 
   final int index; 
-  ProjectTile({required this.index});
+  ProjectCard({required this.index});
 
   String _getProjectName(String name){
     int indexUnderscore = name.indexOf('_');

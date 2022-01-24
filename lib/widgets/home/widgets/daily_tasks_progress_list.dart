@@ -1,11 +1,7 @@
 import 'package:doodle_app/models/daily_task_firestore.dart';
-import 'package:doodle_app/screens/home/project_tile.dart';
-import 'package:doodle_app/screens/home/widgets/daily_progress_circle.dart';
+import 'package:doodle_app/widgets/home/widgets/daily_progress_circle.dart';
 import 'package:flutter/material.dart';
-import 'package:doodle_app/shared/constants.dart';
 import 'package:provider/provider.dart';
-import 'package:doodle_app/models/project.dart';
-import 'package:doodle_app/models/user_mod.dart';
 
 
 

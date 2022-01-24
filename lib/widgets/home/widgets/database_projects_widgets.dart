@@ -1,19 +1,17 @@
-import 'package:doodle_app/models/daily_task_firestore.dart';
-import 'package:doodle_app/screens/home/project_tile.dart';
+import 'package:doodle_app/widgets/home/project_card.dart';
 import 'package:flutter/material.dart';
-import 'package:doodle_app/shared/constants.dart';
 import 'package:provider/provider.dart';
 import 'package:doodle_app/models/project.dart';
 import 'package:doodle_app/models/user_mod.dart';
 
-class DatabaseProjectsWidget extends StatefulWidget {
-  const DatabaseProjectsWidget({Key? key}) : super(key: key);
+class ProjectsListWidget extends StatefulWidget {
+  const ProjectsListWidget({Key? key}) : super(key: key);
 
   @override
-  _DatabaseProjectsWidgetState createState() => _DatabaseProjectsWidgetState();
+  _ProjectsListWidgetState createState() => _ProjectsListWidgetState();
 }
 
-class _DatabaseProjectsWidgetState extends State<DatabaseProjectsWidget> {
+class _ProjectsListWidgetState extends State<ProjectsListWidget> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserMod>(context);
@@ -25,7 +23,7 @@ class _DatabaseProjectsWidgetState extends State<DatabaseProjectsWidget> {
         scrollDirection: Axis.horizontal,
         itemCount: projects.length,
         itemBuilder: (context, it) {
-          return ProjectTile(index: it);
+          return ProjectCard(index: it);
         },
       ),
     );

@@ -1,33 +1,27 @@
 import 'package:doodle_app/models/project.dart';
 import 'package:doodle_app/models/todo.dart';
 import 'package:doodle_app/models/user_mod.dart';
-import 'package:doodle_app/screens/projectPage/widgets/todo_form.dart';
+import 'package:doodle_app/widgets/todo/todo_form.dart';
+import 'package:doodle_app/widgets/todo/todo_widget_ui.dart';
 import 'package:doodle_app/services/data_base.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class TodoOverView extends StatefulWidget {
+class TodoList extends StatefulWidget {
   final int index;
 
 
-  TodoOverView({required this.index});
+  TodoList({required this.index});
 
   @override
-  _TodoOverViewState createState() => _TodoOverViewState();
+  _TodoListState createState() => _TodoListState();
 }
 
-class _TodoOverViewState extends State<TodoOverView> with SingleTickerProviderStateMixin{
-  late AnimationController _animationController;
+class _TodoListState extends State<TodoList> with SingleTickerProviderStateMixin{
 
-  @override
-  void initState() {
-    super.initState();
-    _animationController = AnimationController(
-      vsync: this, // the SingleTickerProviderStateMixin
-      duration: Duration(milliseconds: 400),
-    );
-  }
+
+
   @override
   Widget build(BuildContext context) {
     final projects = Provider.of<List<Project>?>(context) ?? [];
@@ -56,6 +50,7 @@ class _TodoOverViewState extends State<TodoOverView> with SingleTickerProviderSt
           },
           itemCount: todos.length,
           itemBuilder: (context, it) {
+            TodoWidgetUi todoWidgetUi = TodoWidgetUi(todo: project.todos[it],);
             return GestureDetector(
               key: ValueKey(todos[it]),
               onDoubleTap: () async {
@@ -63,12 +58,6 @@ class _TodoOverViewState extends State<TodoOverView> with SingleTickerProviderSt
               },
               onTap: () async {
                 todos[it].state = !todos[it].state;
-                if(todos[it].state){
-                  _animationController.forward();
-                }
-                else{
-                  _animationController.reverse();
-                }
                 await DataBaseService(uid: user!.uid).updateProject(
                     project.name,
                     project.done,
@@ -138,27 +127,7 @@ class _TodoOverViewState extends State<TodoOverView> with SingleTickerProviderSt
 
 
                 },
-                child: Container(
-                  margin: EdgeInsets.only(bottom: 8),
-                  padding: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(15)),
-                    color: Colors.white,
-                  ),
-                  child: Row(
-                    children: [
-                      AnimatedIcon(icon: AnimatedIcons.ellipsis_search, progress: _animationController),
-                      SizedBox(width: 20,),
-                      Text(project.todos[it].name,
-                        style: GoogleFonts.openSans(
-                          fontSize: 14,
-                          letterSpacing: 1,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                child: todoWidgetUi
               ),
             );
           },

@@ -1,5 +1,6 @@
 import 'package:doodle_app/models/daily_task_firestore.dart';
 import 'package:doodle_app/models/user_mod.dart';
+import 'package:doodle_app/shared/constants.dart';
 import 'package:doodle_app/widgets/home/widgets/daily_task_page.dart';
 import 'package:doodle_app/widgets/home/widgets/daily_tasks_progress_list.dart';
 import 'package:doodle_app/widgets/home/widgets/today_tasks_widget.dart';
@@ -32,7 +33,6 @@ class _HomeLayoutState extends State<HomeLayout> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserMod>(context);
-    final dailyTaskFirestore = Provider.of<List<DailyTaskFirestore>?>(context) ?? [];
 
     final AuthService _auth = AuthService();
     return loggedIn
@@ -53,7 +53,7 @@ class _HomeLayoutState extends State<HomeLayout> {
             duration: const Duration(milliseconds: 200),
             child: Material(
               child: Scaffold(
-                backgroundColor: const Color.fromRGBO(14, 31, 84, 0.03),
+                backgroundColor: backGroundColor,//const Color.fromRGBO(14, 31, 84, 0.03),
                 resizeToAvoidBottomInset: false,
                 body: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,7 +66,8 @@ class _HomeLayoutState extends State<HomeLayout> {
                           children: [
                             isDrawerOpen
                                 ? IconButton(
-                                    icon: const Icon(Icons.arrow_back_ios),
+                                    icon: const Icon(Icons.arrow_back_ios,
+                                    color: Colors.white,),
                                     onPressed: () {
                                       setState(() {
                                         xOffset = 0;
@@ -77,7 +78,8 @@ class _HomeLayoutState extends State<HomeLayout> {
                                     },
                                   )
                                 : IconButton(
-                                    icon: Icon(Icons.menu),
+                                    icon: Icon(Icons.menu,
+                                    color: Colors.white,),
                                     onPressed: () {
                                       setState(() {
                                         xOffset = 230;
@@ -87,7 +89,8 @@ class _HomeLayoutState extends State<HomeLayout> {
                                       });
                                     }),
                             IconButton(
-                                icon: const Icon(Icons.logout),
+                                icon: const Icon(Icons.logout,
+                                color: Colors.white,),
                                 onPressed: () async {
                                   setState(() {
                                     loggedIn = false;
@@ -112,7 +115,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                                   style: GoogleFonts.openSans(
                                       fontSize: 12,
                                       fontWeight: FontWeight.bold,
-                                      color: Colors.grey[500])),
+                                      color: Colors.white)),
                               const SizedBox(
                                 height: 10,
                               ),
@@ -124,7 +127,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                                   style: GoogleFonts.openSans(
                                       fontSize: 12,
                                       fontWeight: FontWeight.bold,
-                                      color: Colors.grey[500])),
+                                      color: Colors.white)),
                               const SizedBox(height: 10),
                               const ProjectsListWidget(),
                               const SizedBox(
@@ -134,7 +137,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                                   style: GoogleFonts.openSans(
                                       fontSize: 12,
                                       fontWeight: FontWeight.bold,
-                                      color: Colors.grey[500])),
+                                      color: Colors.white)),
                               const SizedBox(
                                 height: 10,
                               ),
@@ -157,11 +160,8 @@ class _HomeLayoutState extends State<HomeLayout> {
                       icon: const Icon(Icons.add),
                     ),
                     ActionButton(
-                      onPressed: () async {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) =>
-                                DailyTaskPage(index: 0))
-                        );
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => DailyTaskPage(index: 0)));
                       },
                       icon: const Icon(Icons.checklist_rtl_rounded),
                     ),

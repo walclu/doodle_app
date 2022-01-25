@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:doodle_app/shared/constants.dart';
 import 'package:doodle_app/widgets/projectPage/project_page.dart';
 import 'package:flutter/material.dart';
 import 'package:doodle_app/models/project.dart';
@@ -28,6 +31,7 @@ class ProjectCard extends StatelessWidget {
       }
     }
     numTodos == 0? todosProgress = 0 : todosProgress = todosFinished/numTodos;
+    var rnd = Random();
     return Padding(
       padding: const EdgeInsets.only(right: 20),
       child: GestureDetector(
@@ -35,15 +39,13 @@ class ProjectCard extends StatelessWidget {
           Navigator.push(context, MaterialPageRoute(builder: (context) => ProjectPage(index: index)));
         },
         child: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(30)),
             gradient: LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                colors: [
-                  Colors.blueAccent,
-                  Colors.purpleAccent
-                ]
+                begin: Alignment.bottomLeft,
+                end: Alignment.topRight,
+                colors:
+                colorPalette[rnd.nextInt(colorPalette.length)]
             ),
           ),
           width: 195,

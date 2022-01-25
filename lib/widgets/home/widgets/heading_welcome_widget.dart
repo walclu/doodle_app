@@ -12,7 +12,7 @@ class WelcomeWidget extends StatelessWidget {
       'What\'s up, Furk!',
       style: GoogleFonts.openSans(
         fontSize : 30, 
-        color: Colors.grey[850], 
+        color: Colors.white,
         fontWeight: FontWeight.bold, 
         ),
     );

@@ -153,7 +153,7 @@ class _ExpandableFabState extends State<ExpandableFab>
               padding: const EdgeInsets.all(8.0),
               child: Icon(
                 Icons.close,
-                color: Theme.of(context).primaryColor,
+                color: Color.fromRGBO(87, 47, 135, 1),
               ),
             ),
           ),
@@ -198,8 +198,10 @@ class _ExpandableFabState extends State<ExpandableFab>
           curve: const Interval(0.25, 1.0, curve: Curves.easeInOut),
           duration: const Duration(milliseconds: 250),
           child: FloatingActionButton(
+            backgroundColor: Color.fromRGBO(87, 47, 135, 1),
             onPressed: _toggle,
-            child: const Icon(Icons.create),
+            child: const Icon(Icons.create,
+            color: Colors.white,),
           ),
         ),
       ),
@@ -265,7 +267,7 @@ class ActionButton extends StatelessWidget {
     return Material(
       shape: const CircleBorder(),
       clipBehavior: Clip.antiAlias,
-      color: theme.accentColor,
+      color: Color.fromRGBO(87, 47, 135, 1),
       elevation: 4.0,
       child: IconTheme.merge(
         data: theme.accentIconTheme,

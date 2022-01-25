@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+Color backGroundColor = Color.fromRGBO(36, 31, 65, 1);
 Color primaryGreen = Colors.white;
 List<BoxShadow> shadowList = [
   BoxShadow(
       color: Colors.blue, blurRadius: 2, offset: Offset(5, 5), spreadRadius: 1)
+];
+
+List<List<Color>> colorPalette = [
+  [Colors.pinkAccent,
+    Color.fromRGBO(87, 47, 135, 1),],
+  [Color.fromRGBO(73, 43, 191, 1),
+    Color.fromRGBO(134, 112, 223, 1)],
+  [Color.fromRGBO(192, 93, 89, 1),
+    Color.fromRGBO(164, 40, 53, 1)],
 ];
 
 InputDecoration getInputDecoration(String emailOrPassword) {

@@ -30,28 +30,28 @@ class _TodoListState extends State<TodoList> with SingleTickerProviderStateMixin
     final todos = project.todos;
     return Container(
       height: MediaQuery.of(context).size.height * 0.3,
-      child: MediaQuery.removePadding(
-        context: context,
-        removeTop: true,
-        child: ReorderableListView.builder(
-          onReorder: (oldIndex, newIndex) async {
-            setState(() {
-              final index = newIndex > oldIndex ? newIndex - 1 : newIndex;
-              final todo = todos.removeAt(oldIndex);
-              todos.insert(index, todo);
-            });
-            await DataBaseService(uid: user!.uid).updateProject(
-                project.name,
-                project.done,
-                todos,
-                project.userPermissions,
-                project.color
-            );
-          },
-          itemCount: todos.length,
-          itemBuilder: (context, it) {
-            TodoWidgetUi todoWidgetUi = TodoWidgetUi(todo: project.todos[it],);
-            return GestureDetector(
+      child: ReorderableListView.builder(
+        onReorder: (oldIndex, newIndex) async {
+          setState(() {
+            final index = newIndex > oldIndex ? newIndex - 1 : newIndex;
+            final todo = todos.removeAt(oldIndex);
+            todos.insert(index, todo);
+          });
+          await DataBaseService(uid: user!.uid).updateProject(
+              project.name,
+              project.done,
+              todos,
+              project.userPermissions,
+              project.color
+          );
+        },
+        itemCount: todos.length,
+        itemBuilder: (context, it) {
+          TodoWidgetUi todoWidgetUi = TodoWidgetUi(todo: project.todos[it],);
+          return Padding(
+            key: ValueKey(todos[it]),
+            padding: const EdgeInsets.only(left: 20, top: 10, bottom: 5, right: 20),
+            child: GestureDetector(
               key: ValueKey(todos[it]),
               onDoubleTap: () async {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => TodoForm(project: project, index: it)));
@@ -74,8 +74,8 @@ class _TodoListState extends State<TodoList> with SingleTickerProviderStateMixin
                 key: ValueKey(todos[it]),
                 direction: DismissDirection.endToStart,
                 background: Container(
-                  margin: const EdgeInsets.only(bottom: 8),
-                  padding: const EdgeInsets.all(8),
+                  margin: const EdgeInsets.only(right: 10, top: 5, bottom: 5),
+                  padding: const EdgeInsets.only(bottom: 5, right: 20),
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(15)),
                     color: Colors.redAccent,
@@ -129,9 +129,9 @@ class _TodoListState extends State<TodoList> with SingleTickerProviderStateMixin
                 },
                 child: todoWidgetUi
               ),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }

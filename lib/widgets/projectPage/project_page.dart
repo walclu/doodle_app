@@ -23,19 +23,6 @@ class _ProjectPageState extends State<ProjectPage> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserMod?>(context);
-    void _showSettingsPanel() {
-      showModalBottomSheet(
-          context: context,
-          builder: (context) {
-            return Container(
-              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 60),
-              color: Colors.white,
-              child: SettingsForm(
-                projectIndex: widget.index,
-              ),
-            );
-          });
-    }
 
     DataBaseService service = DataBaseService(uid: user!.uid);
     return Material(
@@ -87,7 +74,6 @@ class _ProjectPageState extends State<ProjectPage> {
                 ],
               ),
             ),
-            //
             TodoList(index: widget.index),
           ],
         ),
@@ -95,7 +81,6 @@ class _ProjectPageState extends State<ProjectPage> {
         floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.add),
           onPressed: () {
-            final projects = Provider.of<List<Project>?>(context) ?? [];
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               return SettingsForm(projectIndex: widget.index);
             }));

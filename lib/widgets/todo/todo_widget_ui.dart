@@ -41,48 +41,45 @@ class _TodoWidgetUiState extends State<TodoWidgetUi> with SingleTickerProviderSt
     }
 
     return GestureDetector(
-      child: Padding(
-        padding: const EdgeInsets.only(top: 10, left: 20, right: 10),
-        child: Container(
-          decoration: const BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(15)),
-              color: Colors.white
-            ),
-            width: MediaQuery.of(context).size.width-30,
-            height: 80,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                SimpleAnimatedIcon(startIcon: Icons.circle_outlined, endIcon: Icons.check_outlined, progress: _progress),
-                const SizedBox(width: 20,),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(widget.todo.name,
-                      style: GoogleFonts.openSans(
-                        fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.grey[700]
-                      ),
+      child: Container(
+        decoration: const BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(15)),
+            color: Colors.white
+          ),
+          width: MediaQuery.of(context).size.width-30,
+          height: 80,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              SimpleAnimatedIcon(startIcon: Icons.circle_outlined, endIcon: Icons.check_outlined, progress: _progress),
+              const SizedBox(width: 20,),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(widget.todo.name,
+                    style: GoogleFonts.openSans(
+                      fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.grey[700]
                     ),
-                    SizedBox(height: 5,),
-                    Text(
-                      "Start: ${widget.todo.whenToStart.substring(0,10)}",
-                      style: GoogleFonts.openSans(
-                        fontSize: 10,
-                      ),
-                      ), 
-                                    Text(
-                      "Start: ${widget.todo.whenToBeDone.substring(0,10)}",
-                      style: GoogleFonts.openSans(
-                        fontSize: 10,
-                      ),
-                      ), 
-                  ],
-                ),
-              ],
-            ),
+                  ),
+                  SizedBox(height: 5,),
+                  Text(
+                    "  Start: ${widget.todo.whenToStart.substring(0,10)}",
+                    style: GoogleFonts.openSans(
+                      fontSize: 10,
+                    ),
+                    ),
+                                  Text(
+                    "End: ${widget.todo.whenToBeDone.substring(0,10)}",
+                    style: GoogleFonts.openSans(
+                      fontSize: 10,
+                    ),
+                    ),
+                ],
+              ),
+            ],
           ),
         ),
       ),

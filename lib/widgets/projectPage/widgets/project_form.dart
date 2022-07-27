@@ -1,3 +1,4 @@
+import 'package:doodle_app/models/daily_task_firestore.dart';
 import 'package:doodle_app/models/project.dart';
 import 'package:doodle_app/models/user_mod.dart';
 import 'package:doodle_app/services/data_base.dart';
@@ -29,6 +30,8 @@ class _ProjectFormState extends State<ProjectForm> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserMod>(context);
+    final projects = Provider.of<List<Project>?>(context) ?? [];
+    print(projects); 
     return Material(
       color: Colors.white,
       child: Form(
@@ -67,7 +70,7 @@ class _ProjectFormState extends State<ProjectForm> {
                 height: 20,
               ),
               Align(
-                alignment: Alignment.centerLeft,
+                                alignment: Alignment.centerLeft,
                 child: Container(
                   width: 100,
                   padding: const EdgeInsets.all(10),

@@ -2,6 +2,7 @@ import 'package:doodle_app/models/daily_task.dart';
 import 'package:doodle_app/models/daily_task_firestore.dart';
 import 'package:doodle_app/models/user_mod.dart';
 import 'package:doodle_app/services/data_base.dart';
+import 'package:doodle_app/shared/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -18,6 +19,7 @@ class DailyForm extends StatefulWidget {
 class _DailyFormState extends State<DailyForm> {
   final _formKey = GlobalKey<FormState>();
   String userInput = "";
+  String dropdownValue = 'One';
 
   @override
   Widget build(BuildContext context) {
@@ -57,8 +59,36 @@ class _DailyFormState extends State<DailyForm> {
                 onChanged: (val) => setState(() => userInput = val),
               ),
               const SizedBox(
-                height: 50,
+                height: 30,
               ),
+
+              Align(
+                alignment: Alignment.topLeft,
+                child: DropdownButton<String>(
+                    value: dropdownValue,
+                    
+                    icon: const Icon(Icons.arrow_downward),
+                    elevation: 16,
+                    style: const TextStyle(color: Colors.deepPurple),
+                    underline: Container(
+                      height: 2,
+                      color: Colors.deepPurpleAccent,
+                    ),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        dropdownValue = newValue!;
+                      });
+                    },
+                    items: <String>['One', 'Two', 'Free', 'Four']
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  ),
+              ),
+
               const SizedBox(
                 height: 100,
               ),
@@ -78,7 +108,7 @@ class _DailyFormState extends State<DailyForm> {
 
                             List<DailyTask> myDailies = widget.firebaseDoc.dailies;
                             myDailies
-                                .add(DailyTask(name: userInput, done: false));
+                                .add(DailyTask(name: userInput, done: false, category: dropdownValue));
                             await DataBaseService(uid: user.uid)
                                 .updateDailyTask(DailyTaskFirestore(
                                     dailies: myDailies,

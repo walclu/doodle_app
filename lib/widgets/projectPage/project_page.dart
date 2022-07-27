@@ -29,7 +29,7 @@ class _ProjectPageState extends State<ProjectPage> {
       color: Colors.grey,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: Color.fromRGBO(249, 250, 255,1),
+        backgroundColor: backGroundColor,
         body: Column(
           children: [
             const SizedBox(height: 60),

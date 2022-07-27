@@ -9,7 +9,7 @@ class WelcomeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Text(
-      'What\'s up, Furk!',
+      'What\'s up, Furkan!',
       style: GoogleFonts.openSans(
         fontSize : 30, 
         color: Colors.white,

@@ -13,14 +13,14 @@ class DataBaseService {
   final CollectionReference uidCollection =
       FirebaseFirestore.instance.collection('uids');
 
-  //PROJEKT
+  //PROJEKTE AUF DIE ICH ZUGRIFF HABE
   final CollectionReference projectCollection =
       FirebaseFirestore.instance.collection('projects');
 
   late final Query unapproved =
       projectCollection.where("permissions", arrayContains: uid);
 
-  //DAILY
+  //DAILYS AUF DIE ICH ZUGRIFF HABE
   final CollectionReference dailyTaskCollection =
   FirebaseFirestore.instance.collection('dailyTasks');
 
@@ -125,6 +125,7 @@ class DataBaseService {
         return {
           'name': dailyTask.name,
           'done': dailyTask.done,
+          'category': dailyTask.category,
         };
       }).toList(),
       'permissions': dailyTaskFirestore.permissions
@@ -143,6 +144,7 @@ class DataBaseService {
           return DailyTask(
               name: daily["name"],
               done: daily["done"],
+              category: daily["category"],
           );
         }).toList(),
       );

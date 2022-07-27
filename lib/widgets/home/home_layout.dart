@@ -1,6 +1,8 @@
 import 'package:doodle_app/models/daily_task_firestore.dart';
+import 'package:doodle_app/models/project.dart';
 import 'package:doodle_app/models/user_mod.dart';
 import 'package:doodle_app/shared/constants.dart';
+import 'package:doodle_app/widgets/competitions/competitions_wrapper.dart';
 import 'package:doodle_app/widgets/home/widgets/daily_task_page.dart';
 import 'package:doodle_app/widgets/home/widgets/daily_tasks_progress_list.dart';
 import 'package:doodle_app/widgets/home/widgets/today_tasks_widget.dart';
@@ -33,7 +35,6 @@ class _HomeLayoutState extends State<HomeLayout> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserMod>(context);
-
     final AuthService _auth = AuthService();
     return loggedIn
         ? MaterialApp(
@@ -160,8 +161,8 @@ class _HomeLayoutState extends State<HomeLayout> {
                       icon: const Icon(Icons.add),
                     ),
                     ActionButton(
-                      onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => DailyTaskPage(index: 0)));
+                      onPressed: () async {
+                         Navigator.push(context,MaterialPageRoute(builder: (context) => CompetitionsWrapper()));
                       },
                       icon: const Icon(Icons.checklist_rtl_rounded),
                     ),

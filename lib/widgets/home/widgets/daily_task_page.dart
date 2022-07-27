@@ -1,6 +1,7 @@
 import 'package:doodle_app/models/daily_task.dart';
 import 'package:doodle_app/models/daily_task_firestore.dart';
 import 'package:doodle_app/models/user_mod.dart';
+import 'package:doodle_app/shared/loading.dart';
 import 'package:doodle_app/widgets/daily/daily_form.dart';
 import 'package:doodle_app/services/data_base.dart';
 import 'package:doodle_app/shared/constants.dart';
@@ -27,18 +28,30 @@ class _DailyTaskPageState extends State<DailyTaskPage> {
     setState(() {
 
     });
-    print("Hello world");
   }
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context)  {
+    print("hallo welt"); 
     final user = Provider.of<UserMod?>(context);
-    final dailyTaskFirestore = Provider.of<List<DailyTaskFirestore>?>(context) ?? [];
-    DailyTaskFirestore firebaseDoc = dailyTaskFirestore[widget.index];
-    DataBaseService service = DataBaseService(uid: user!.uid);
+    final dailyTaskFirestore =  Provider.of<List<DailyTaskFirestore>?>(context) ?? []; 
+    print(dailyTaskFirestore); 
+    print(user!.uid); 
+    bool? owner;
+     DailyTaskFirestore? firebaseDoc; 
+    List<DailyTask>? dailyTasks; 
+    DataBaseService? service; 
+    if(dailyTaskFirestore.isNotEmpty){
+      print("In der If"); 
+     firebaseDoc = dailyTaskFirestore[widget.index];
+    service = DataBaseService(uid: user.uid);
+    
+    dailyTasks = firebaseDoc.dailies;
+    owner = user.uid==firebaseDoc.permissions[0];
+    }
 
-    List<DailyTask> dailyTasks = firebaseDoc.dailies;
-    bool owner = user.uid==firebaseDoc.permissions[0];
-    return Material(
+    return dailyTaskFirestore.isEmpty ?  Loading() :
+    
+    Material(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: Column(
@@ -46,7 +59,7 @@ class _DailyTaskPageState extends State<DailyTaskPage> {
             const SizedBox(height: 60),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: owner ? Row(
+              child: owner! ? Row(
                 children: [
                   Expanded(
                     child: Form(
@@ -69,7 +82,7 @@ class _DailyTaskPageState extends State<DailyTaskPage> {
                     onPressed: owner? () async {
                       if (_formKey.currentState!.validate()) {
                         dynamic result =
-                            await service.uidCollection.doc(search).get();
+                            await service!.uidCollection.doc(search).get();
                         try {
                           // await service.addUserToDailyTasks();
                         } catch (e) {
@@ -95,25 +108,25 @@ class _DailyTaskPageState extends State<DailyTaskPage> {
                     onReorder: owner ? (oldIndex, newIndex) async {
                       setState(() {
                         final index = newIndex > oldIndex ? newIndex - 1 : newIndex;
-                        final task = dailyTasks.removeAt(oldIndex);
+                        final task = dailyTasks!.removeAt(oldIndex);
                         dailyTasks.insert(index, task);
                       });
-                      firebaseDoc.dailies = dailyTasks;
+                      firebaseDoc!.dailies = dailyTasks!;
                       await DataBaseService(uid: user.uid).updateDailyTask(
                          firebaseDoc
                       );
                     } : (oldIndex, newIndex){
 
                     },
-                    itemCount: dailyTasks.length,
+                    itemCount: dailyTasks!.length,
                     itemBuilder: (context, it) {
                       return GestureDetector(
-                        key: ValueKey(dailyTasks[it]),
+                        key: ValueKey(dailyTasks![it]),
                         onDoubleTap: () async {
                         },
-                        onTap: owner? () async {
-                          dailyTasks[it].done = !dailyTasks[it].done;
-                          firebaseDoc.dailies = dailyTasks;
+                        onTap: owner!? () async {
+                          dailyTasks![it].done = !dailyTasks[it].done;
+                          firebaseDoc!.dailies = dailyTasks;
                           await DataBaseService(uid: user.uid).updateDailyTask(
                              firebaseDoc
                           );
@@ -143,9 +156,9 @@ class _DailyTaskPageState extends State<DailyTaskPage> {
                             ),
                           ),
                           onDismissed: (direction) async {
-                           DailyTask safe = dailyTasks.removeAt(it);
-                           firebaseDoc.dailies = dailyTasks;
-                           await service.updateDailyTask(
+                           DailyTask safe = dailyTasks!.removeAt(it);
+                           firebaseDoc!.dailies = dailyTasks;
+                           await service!.updateDailyTask(
                              firebaseDoc
                            );
 
@@ -155,9 +168,9 @@ class _DailyTaskPageState extends State<DailyTaskPage> {
                               action: SnackBarAction(
                                 label: 'Undo',
                                 onPressed: () async {
-                                  dailyTasks.insert(it, safe);
-                                  firebaseDoc.dailies = dailyTasks;
-                                  await service.updateDailyTask(
+                                  dailyTasks!.insert(it, safe);
+                                  firebaseDoc!.dailies = dailyTasks;
+                                  await service!.updateDailyTask(
                                     firebaseDoc
                                   );
                                   setState(() {});
@@ -240,7 +253,7 @@ class _DailyTaskPageState extends State<DailyTaskPage> {
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) =>
-                    DailyForm(firebaseDoc: firebaseDoc))
+                    DailyForm(firebaseDoc: firebaseDoc!))
             );
             setState(() {
 
